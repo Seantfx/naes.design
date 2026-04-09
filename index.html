@@ -1,0 +1,470 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Sean Tiffonnet — Senior Product Designer</title>
+  <meta name="description" content="Senior Product Designer with 10+ years of experience crafting digital products. Previously at Claap, 360Learning, Zeliq and Nodale.">
+
+  <!-- Open Graph -->
+  <meta property="og:type" content="website">
+  <meta property="og:url" content="https://naes.design">
+  <meta property="og:title" content="Sean Tiffonnet — Senior Product Designer">
+  <meta property="og:description" content="Senior Product Designer with 10+ years of experience crafting digital products. Previously at Claap, 360Learning, Zeliq and Nodale.">
+  <meta property="og:image" content="https://naes.design/og-image.png">
+
+  <!-- Twitter / X -->
+  <meta name="twitter:card" content="summary_large_image">
+  <meta name="twitter:site" content="@SeanTiffonnet">
+  <meta name="twitter:title" content="Sean Tiffonnet — Senior Product Designer">
+  <meta name="twitter:description" content="Senior Product Designer with 10+ years of experience crafting digital products. Previously at Claap, 360Learning, Zeliq and Nodale.">
+  <meta name="twitter:image" content="https://naes.design/og-image.png">
+
+  <!-- Favicon -->
+  <link rel="icon" type="image/png" href="favicon.png">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600&display=swap" rel="stylesheet">
+  <style>
+    *,*::before,*::after{margin:0;padding:0;box-sizing:border-box}
+    :root{--bg:#0a0a0a;--bg-elevated:#111;--surface:#161616;--border:#222;--text:#f0f0f0;--text-secondary:#777;--accent:#d4ff00;--radius:12px;--radius-lg:20px;--font:'Inter',-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif;--ease:cubic-bezier(.16,1,.3,1);--ease-out:cubic-bezier(0,0,.2,1)}
+    html{font-size:16px;scroll-behavior:smooth;-webkit-font-smoothing:antialiased;-moz-osx-font-smoothing:grayscale}
+    body{font-family:var(--font);background:var(--bg);color:var(--text);line-height:1.6;overflow-x:hidden;cursor:none}
+    a{color:inherit;text-decoration:none;cursor:none}button{cursor:none}img{display:block;max-width:100%}em{font-style:italic;color:var(--accent)}::selection{background:var(--accent);color:var(--bg)}
+
+    .loader{position:fixed;inset:0;z-index:9999;background:var(--bg);display:flex;align-items:flex-end;transition:opacity .6s var(--ease),visibility .6s}
+    .loader.hidden{opacity:0;visibility:hidden;pointer-events:none}
+    .loader-bar{width:0;height:2px;background:var(--accent);transition:width 1.2s var(--ease)}.loader-bar.loading{width:100%}
+
+    .cursor{position:fixed;width:8px;height:8px;background:var(--accent);border-radius:50%;pointer-events:none;z-index:10000;transform:translate(-50%,-50%);transition:width .3s var(--ease),height .3s var(--ease),background .3s;mix-blend-mode:difference}
+    .cursor-follower{position:fixed;width:36px;height:36px;border:1px solid rgba(212,255,0,.3);border-radius:50%;pointer-events:none;z-index:9999;transform:translate(-50%,-50%);transition:width .4s var(--ease),height .4s var(--ease),border-color .3s}
+    .cursor.hovering{width:48px;height:48px;background:transparent;border:1px solid var(--accent);mix-blend-mode:normal}
+    .cursor-follower.hovering{width:56px;height:56px;border-color:transparent}
+
+    .nav{position:fixed;top:0;left:0;right:0;z-index:100;display:flex;align-items:center;justify-content:space-between;padding:24px 48px;background:rgba(10,10,10,.8);backdrop-filter:blur(20px);-webkit-backdrop-filter:blur(20px);border-bottom:1px solid transparent;transition:border-color .3s,padding .3s}
+    .nav.scrolled{border-bottom-color:var(--border);padding:16px 48px}
+    .nav-logo{font-size:1rem;font-weight:500;letter-spacing:-.02em}
+    .nav-links{display:flex;gap:40px}
+    .nav-link{font-size:.875rem;color:var(--text-secondary);transition:color .3s;position:relative}
+    .nav-link::after{content:'';position:absolute;bottom:-4px;left:0;width:0;height:1px;background:var(--accent);transition:width .3s var(--ease)}
+    .nav-link:hover,.nav-link.active{color:var(--text)}.nav-link.active::after,.nav-link:hover::after{width:100%}
+    .nav-menu-btn{display:none;flex-direction:column;gap:6px;background:none;border:none;padding:8px}
+    .nav-menu-btn span{display:block;width:24px;height:1px;background:var(--text);transition:transform .3s var(--ease),opacity .3s}
+    .nav-menu-btn.open span:first-child{transform:rotate(45deg) translate(2px,3px)}.nav-menu-btn.open span:last-child{transform:rotate(-45deg) translate(2px,-3px)}
+
+    .mobile-menu{position:fixed;inset:0;z-index:99;background:var(--bg);display:flex;align-items:center;justify-content:center;opacity:0;visibility:hidden;transition:opacity .4s var(--ease),visibility .4s}
+    .mobile-menu.open{opacity:1;visibility:visible}.mobile-menu-links{text-align:center}
+    .mobile-link{display:block;font-size:2.5rem;font-weight:300;letter-spacing:-.03em;margin-bottom:16px;color:var(--text-secondary);transition:color .3s}.mobile-link:hover{color:var(--text)}
+    .mobile-menu-divider{width:48px;height:1px;background:var(--border);margin:32px auto}
+    .mobile-socials{display:flex;gap:24px;justify-content:center}.mobile-socials a{font-size:.875rem;color:var(--text-secondary);transition:color .3s}.mobile-socials a:hover{color:var(--accent)}
+
+    .page{display:none;min-height:100vh;padding-top:120px}.page.active{display:block}
+
+    .hero{padding:80px 48px 64px;max-width:1400px;margin:0 auto}
+    .hero-label{font-size:.75rem;letter-spacing:.1em;text-transform:uppercase;color:var(--text-secondary);margin-bottom:24px}
+    .hero-title{font-size:clamp(2.5rem,7vw,5.5rem);font-weight:300;letter-spacing:-.04em;line-height:1.1}
+
+    .projects{padding:0 48px 120px;max-width:1400px;margin:0 auto;display:grid;gap:48px}
+    .project-card{display:grid;grid-template-columns:1fr;gap:20px;padding-top:48px;border-top:1px solid var(--border);transition:opacity .3s}.project-card:hover{opacity:.85}
+    .project-img{width:100%;overflow:hidden;border-radius:var(--radius-lg)}
+    .project-img img{width:100%;aspect-ratio:16/9;object-fit:cover;border-radius:var(--radius-lg);border:1px solid var(--border);transition:border-color .4s}
+    .project-card:hover .project-img img{border-color:var(--accent)}
+    .project-info{display:flex;justify-content:space-between;align-items:baseline;padding:0 4px}
+    .project-info h2{font-size:1.25rem;font-weight:500;letter-spacing:-.02em}.project-info p{font-size:.8rem;color:var(--text-secondary)}
+
+    .about-hero{padding:80px 48px 64px;max-width:1400px;margin:0 auto}
+    .about-grid{display:grid;grid-template-columns:1fr 1fr;gap:64px;align-items:end}
+    .about-label{font-size:.75rem;letter-spacing:.1em;text-transform:uppercase;color:var(--text-secondary);margin-bottom:24px}
+    .about-title{font-size:clamp(2rem,5vw,4rem);font-weight:300;letter-spacing:-.04em;line-height:1.1}
+    .about-portrait-placeholder{width:100%;aspect-ratio:3/4;background:var(--surface);border-radius:var(--radius-lg);display:flex;align-items:center;justify-content:center;font-size:.8rem;color:var(--text-secondary);border:1px solid var(--border)}
+    .about-bio,.about-experience,.about-skills{padding:48px;max-width:1400px;margin:0 auto;border-top:1px solid var(--border)}
+    .about-bio-grid{display:grid;grid-template-columns:200px 1fr;gap:64px}
+    .about-bio-label p{font-size:.75rem;letter-spacing:.1em;text-transform:uppercase;color:var(--text-secondary)}
+    .about-bio-text p{font-size:1.05rem;color:var(--text-secondary);line-height:1.7;max-width:640px}.about-bio-text p+p{margin-top:16px}
+    .experience-list{display:flex;flex-direction:column}
+    .experience-item{display:flex;justify-content:space-between;align-items:baseline;padding:20px 0;border-bottom:1px solid var(--border)}.experience-item:first-child{padding-top:0}
+    .exp-role h3{font-size:1rem;font-weight:500}.exp-company{font-size:.85rem;color:var(--text-secondary);margin-top:2px}.exp-year{font-size:.8rem;color:var(--text-secondary);white-space:nowrap}
+    .skills-grid{display:flex;flex-wrap:wrap;gap:8px}
+    .skill-tag{padding:8px 16px;border:1px solid var(--border);border-radius:100px;font-size:.8rem;color:var(--text-secondary);transition:border-color .3s,color .3s}.skill-tag:hover{border-color:var(--accent);color:var(--text)}
+
+    .project-hero{padding:40px 48px 64px;max-width:1400px;margin:0 auto}
+    .back-link{display:inline-block;font-size:.8rem;color:var(--text-secondary);margin-bottom:48px;transition:color .3s}.back-link:hover{color:var(--accent)}
+    .project-hero-label{font-size:.75rem;letter-spacing:.1em;text-transform:uppercase;color:var(--text-secondary);margin-bottom:24px}
+    .project-hero-title{font-size:clamp(2rem,5vw,4rem);font-weight:300;letter-spacing:-.04em;line-height:1.1;margin-bottom:48px}
+    .project-meta{display:flex;gap:64px;padding-top:32px;border-top:1px solid var(--border)}
+    .meta-label{font-size:.7rem;letter-spacing:.1em;text-transform:uppercase;color:var(--text-secondary);margin-bottom:4px}.meta-item p:last-child{font-size:.9rem}
+    .project-content{padding:64px 48px 80px;max-width:1400px;margin:0 auto}
+    .project-text{max-width:640px;margin-bottom:64px}.project-text p{font-size:1.05rem;color:var(--text-secondary);line-height:1.7}
+    .project-gallery{display:flex;flex-direction:column;gap:16px}
+    .gallery-row{display:grid;grid-template-columns:1fr 1fr;gap:16px}
+    .gallery-item img{width:100%;border-radius:var(--radius-lg);display:block}
+    .gallery-full img{aspect-ratio:16/9;object-fit:cover}
+    .gallery-half img{aspect-ratio:4/3;object-fit:cover}
+
+    .project-nav-bottom{padding:64px 48px;max-width:1400px;margin:0 auto;border-top:1px solid var(--border)}
+    .next-project{display:block;transition:opacity .3s}.next-project:hover{opacity:.7}
+    .next-label{font-size:.75rem;letter-spacing:.1em;text-transform:uppercase;color:var(--text-secondary);margin-bottom:12px}
+    .next-project h2{font-size:clamp(2rem,4vw,3.5rem);font-weight:300;letter-spacing:-.03em}
+
+    .page-404{display:none}.page-404.active{display:flex;align-items:center;justify-content:center}
+    .error-section{text-align:center;padding:48px}
+    .error-label{font-size:8rem;font-weight:200;letter-spacing:-.06em;color:var(--accent);line-height:1;margin-bottom:24px}
+    .error-title{font-size:clamp(1.5rem,3vw,2.5rem);font-weight:300;letter-spacing:-.03em;line-height:1.2;margin-bottom:48px}
+    .error-btn{display:inline-block;padding:14px 32px;border:1px solid var(--border);border-radius:100px;font-size:.85rem;color:var(--text-secondary);transition:border-color .3s,color .3s,background .3s}
+    .error-btn:hover{border-color:var(--accent);color:var(--bg);background:var(--accent)}
+
+    .footer{padding:32px 48px;border-top:1px solid var(--border);max-width:1400px;margin:0 auto}
+    .footer-bottom{display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:16px}
+    .footer-nav{display:flex;gap:24px}.footer-nav a{font-size:.8rem;color:var(--text-secondary);transition:color .3s}.footer-nav a:hover{color:var(--text)}
+    .footer-socials{display:flex;gap:16px}.footer-socials a{color:var(--text-secondary);transition:color .3s}.footer-socials a:hover{color:var(--accent)}
+    .footer-copy{font-size:.7rem;color:var(--text-secondary)}
+
+    .reveal-text{display:block;opacity:0;transform:translateY(20px);transition:opacity .8s var(--ease),transform .8s var(--ease)}.reveal-text.visible{opacity:1;transform:translateY(0)}
+    .reveal-up{opacity:0;transform:translateY(40px);transition:opacity .8s var(--ease),transform .8s var(--ease)}.reveal-up.visible{opacity:1;transform:translateY(0)}
+
+    @media(max-width:1024px){.about-grid{grid-template-columns:1fr;gap:48px}.about-bio-grid{grid-template-columns:1fr;gap:24px}}
+    @media(max-width:768px){
+      .nav{padding:16px 24px}.nav.scrolled{padding:12px 24px}.nav-links{display:none}.nav-menu-btn{display:flex}
+      .hero,.about-hero{padding:48px 24px 40px}.projects{padding:0 24px 80px;gap:32px}
+      .project-meta{flex-wrap:wrap;gap:24px}
+      .project-hero,.project-content,.project-nav-bottom{padding-left:24px;padding-right:24px}
+      .about-bio,.about-experience,.about-skills{padding-left:24px;padding-right:24px}
+      .gallery-row{grid-template-columns:1fr}.footer{padding:24px}
+      .footer-bottom{flex-direction:column;align-items:flex-start}
+      .cursor,.cursor-follower{display:none}body{cursor:auto}a,button{cursor:pointer}
+    }
+    @media(max-width:480px){.hero-title{font-size:2rem}.error-label{font-size:5rem}}
+  </style>
+</head>
+<body>
+
+  <div class="loader" id="loader"><div class="loader-bar"></div></div>
+  <div class="cursor" id="cursor"></div>
+  <div class="cursor-follower" id="cursor-follower"></div>
+
+  <nav class="nav" id="nav">
+    <a href="#" class="nav-logo" data-page="home">naes.</a>
+    <div class="nav-links">
+      <a href="#" data-page="home" class="nav-link active">Work</a>
+      <a href="#" data-page="about" class="nav-link">About</a>
+    </div>
+    <button class="nav-menu-btn" id="menuBtn" aria-label="Menu"><span></span><span></span></button>
+  </nav>
+
+  <div class="mobile-menu" id="mobileMenu">
+    <div class="mobile-menu-links">
+      <a href="#" data-page="home" class="mobile-link">Work</a>
+      <a href="#" data-page="about" class="mobile-link">About</a>
+      <div class="mobile-menu-divider"></div>
+      <div class="mobile-socials">
+        <a href="https://linkedin.com/in/seantiffonnet" target="_blank" rel="noopener">LinkedIn</a>
+        <a href="https://dribbble.com/SeanTiffonnet" target="_blank" rel="noopener">Dribbble</a>
+        <a href="https://x.com/SeanTiffonnet" target="_blank" rel="noopener">X</a>
+      </div>
+    </div>
+  </div>
+
+  <!-- ==================== HOME ==================== -->
+  <main class="page page-home active" id="page-home">
+    <section class="hero">
+      <p class="hero-label reveal-text">Selected Works — 2016 / 2026</p>
+      <h1 class="hero-title">
+        <span class="reveal-text">Crafting product</span>
+        <span class="reveal-text">experiences that</span>
+        <span class="reveal-text"><em>resonate</em></span>
+      </h1>
+    </section>
+    <section class="projects">
+      <a href="#" class="project-card reveal-up" data-page="project-nodale">
+        <div class="project-img"><img src="Nodale/THUMBNAIL.png" alt="Nodale project thumbnail" loading="lazy"></div>
+        <div class="project-info"><h2>Nodale</h2><p>Product Design — 2025</p></div>
+      </a>
+      <a href="#" class="project-card reveal-up" data-page="project-zeliq">
+        <div class="project-img"><img src="Zeliq/THUMBNAIL.png" alt="Zeliq project thumbnail" loading="lazy"></div>
+        <div class="project-info"><h2>Zeliq</h2><p>Senior Product Designer — 2025</p></div>
+      </a>
+      <a href="#" class="project-card reveal-up" data-page="project-claap">
+        <div class="project-img"><img src="Claap/THUMBNAIL.png" alt="Claap project thumbnail" loading="lazy"></div>
+        <div class="project-info"><h2>Claap</h2><p>Senior Product Designer — 2021 / 2024</p></div>
+      </a>
+      <a href="#" class="project-card reveal-up" data-page="project-alto">
+        <div class="project-img"><img src="Alto/THUMBNAIL.png" alt="Alto project thumbnail" loading="lazy"></div>
+        <div class="project-info"><h2>Alto</h2><p>Product Designer</p></div>
+      </a>
+      <a href="#" class="project-card reveal-up" data-page="project-360learning">
+        <div class="project-img"><img src="360learning/THUMBNAIL.png" alt="360Learning project thumbnail" loading="lazy"></div>
+        <div class="project-info"><h2>360Learning</h2><p>Product Designer — 2016 / 2021</p></div>
+      </a>
+    </section>
+  </main>
+
+  <!-- ==================== ABOUT ==================== -->
+  <main class="page page-about" id="page-about">
+    <section class="about-hero">
+      <div class="about-grid">
+        <div class="about-col-left">
+          <p class="about-label reveal-text">About</p>
+          <h1 class="about-title">
+            <span class="reveal-text">Product designer,</span>
+            <span class="reveal-text">design leader &</span>
+            <span class="reveal-text">problem <em>solver</em></span>
+          </h1>
+        </div>
+        <div class="about-col-right">
+          <div class="about-portrait"><img src="About/profil_picture.png" alt="Portrait" style="width:100%;aspect-ratio:3/4;object-fit:cover;border-radius:var(--radius-lg)"></div>
+        </div>
+      </div>
+    </section>
+    <section class="about-bio reveal-up">
+      <div class="about-bio-grid">
+        <div class="about-bio-label"><p>Bio</p></div>
+        <div class="about-bio-text">
+          <p>I started designing at 14, teaching myself Photoshop to customize Counter-Strike visuals. What began as a hobby quickly turned into a business. At 16, I co-founded Alto, a digital agency serving 100+ clients across e-commerce, restaurants, e-sport teams, and entrepreneurs.</p>
+          <p>After graduating from Epitech Digital in 2016, I joined 360Learning as the second designer and helped grow the design team to 8 members over nearly five years.</p>
+          <p>In 2021, I became the founding designer and first employee at Claap.io, building the entire product and brand from scratch. Claap earned Top 10 best-designed products of 2022 on ProductHunt, Product of the Day in 2022 and 2023, and was featured among the best screen recording apps in 2024. The company was later acquired by <a href="https://www.lemlist.com/blog/lemlist-just-spent-over-15m-to-buy-ai-sales-intelligence-platform-claap" target="_blank" rel="noopener" style="color:var(--accent);text-decoration:underline;text-underline-offset:3px">Lemlist</a>.</p>
+          <p>Today I'm a 32-year-old Franco-Irish designer based in Andalusia, Spain. Designing remotely for Zeliq and Nodale, bringing 10+ years of product thinking, design systems, and user-centered craft to every project.</p>
+        </div>
+      </div>
+    </section>
+    <section class="about-experience reveal-up">
+      <div class="about-bio-grid">
+        <div class="about-bio-label"><p>Experience</p></div>
+        <div class="experience-list">
+          <div class="experience-item"><div class="exp-role"><h3>Senior Product Designer</h3><p class="exp-company">Nodale</p></div><p class="exp-year">Nov 2025 — Present</p></div>
+          <div class="experience-item"><div class="exp-role"><h3>Senior Product Designer</h3><p class="exp-company">Zeliq</p></div><p class="exp-year">Jan 2025 — Present</p></div>
+          <div class="experience-item"><div class="exp-role"><h3>Senior Product Designer</h3><p class="exp-company">Claap (Acquired by Lemlist)</p></div><p class="exp-year">Mar 2021 — Aug 2024</p></div>
+          <div class="experience-item"><div class="exp-role"><h3>Product Designer</h3><p class="exp-company">Alto</p></div><p class="exp-year">2021</p></div>
+          <div class="experience-item"><div class="exp-role"><h3>Product Designer</h3><p class="exp-company">360Learning</p></div><p class="exp-year">Sep 2016 — Mar 2021</p></div>
+        </div>
+      </div>
+    </section>
+    <section class="about-skills reveal-up">
+      <div class="about-bio-grid">
+        <div class="about-bio-label"><p>Skills</p></div>
+        <div class="skills-grid">
+          <span class="skill-tag">Product Design</span>
+          <span class="skill-tag">User-centered Design</span>
+          <span class="skill-tag">UI / UX</span>
+          <span class="skill-tag">Interaction Design</span>
+          <span class="skill-tag">Design Systems</span>
+          <span class="skill-tag">User Research</span>
+          <span class="skill-tag">Prototyping</span>
+          <span class="skill-tag">Motion Design</span>
+          <span class="skill-tag">Visual Communication</span>
+          <span class="skill-tag">Figma</span>
+          <span class="skill-tag">After Effects</span>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <!-- ==================== PROJECT: NODALE ==================== -->
+  <main class="page page-project" id="page-project-nodale">
+    <section class="project-hero">
+      <a href="#" class="back-link reveal-text" data-page="home">← Back to work</a>
+      <p class="project-hero-label reveal-text">Nodale — Nov 2025 / Present</p>
+      <h1 class="project-hero-title"><span class="reveal-text">Designing the next</span><span class="reveal-text">generation of <em>tools</em></span></h1>
+      <div class="project-meta reveal-up">
+        <div class="meta-item"><p class="meta-label">Role</p><p>Product Designer</p></div>
+        <div class="meta-item"><p class="meta-label">Type</p><p>Full-time · Remote</p></div>
+        <div class="meta-item"><p class="meta-label">Tools</p><p>Figma</p></div>
+      </div>
+    </section>
+    <section class="project-content">
+      <div class="project-text reveal-up"><p>Currently shaping the product experience at Nodale, working on building user-centered interfaces and contributing to the design vision from the ground up.</p></div>
+      <div class="project-gallery">
+        <div class="gallery-item gallery-full reveal-up"><img src="Nodale/1.png" alt="Nodale hero" loading="lazy"></div>
+        <div class="gallery-row">
+          <div class="gallery-item gallery-half reveal-up"><img src="Nodale/2.png" alt="Nodale detail" loading="lazy"></div>
+          <div class="gallery-item gallery-half reveal-up"><img src="Nodale/3.png" alt="Nodale detail" loading="lazy"></div>
+        </div>
+        <div class="gallery-item gallery-full reveal-up"><img src="Nodale/4.png" alt="Nodale full width" loading="lazy"></div>
+      </div>
+    </section>
+    <section class="project-nav-bottom reveal-up"><a href="#" data-page="project-zeliq" class="next-project"><p class="next-label">Next project</p><h2>Zeliq</h2></a></section>
+  </main>
+
+  <!-- ==================== PROJECT: ZELIQ ==================== -->
+  <main class="page page-project" id="page-project-zeliq">
+    <section class="project-hero">
+      <a href="#" class="back-link reveal-text" data-page="home">← Back to work</a>
+      <p class="project-hero-label reveal-text">Zeliq — Jan 2025 / Present</p>
+      <h1 class="project-hero-title"><span class="reveal-text">Scaling sales</span><span class="reveal-text">prospecting <em>experience</em></span></h1>
+      <div class="project-meta reveal-up">
+        <div class="meta-item"><p class="meta-label">Role</p><p>Senior Product Designer</p></div>
+        <div class="meta-item"><p class="meta-label">Type</p><p>Full-time · Remote</p></div>
+        <div class="meta-item"><p class="meta-label">Tools</p><p>Figma</p></div>
+      </div>
+    </section>
+    <section class="project-content">
+      <div class="project-text reveal-up"><p>Designing user interfaces and experiences for Zeliq's sales prospecting platform. Leading design direction, contributing to product strategy through user-centered design and design thinking principles. Advocating for user-centric practices at the organizational level and collaborating with cross-functional teams, stakeholders, and partners.</p></div>
+      <div class="project-gallery">
+        <div class="gallery-item gallery-full reveal-up"><img src="Zeliq/1.png" alt="Zeliq hero" loading="lazy"></div>
+        <div class="gallery-row">
+          <div class="gallery-item gallery-half reveal-up"><img src="Zeliq/2.png" alt="Zeliq detail" loading="lazy"></div>
+          <div class="gallery-item gallery-half reveal-up"><img src="Zeliq/3.png" alt="Zeliq detail" loading="lazy"></div>
+        </div>
+        <div class="gallery-item gallery-full reveal-up"><img src="Zeliq/4.png" alt="Zeliq full width" loading="lazy"></div>
+        <div class="gallery-row">
+          <div class="gallery-item gallery-half reveal-up"><img src="Zeliq/5.png" alt="Zeliq detail" loading="lazy"></div>
+          <div class="gallery-item gallery-half reveal-up"><img src="Zeliq/6.png" alt="Zeliq detail" loading="lazy"></div>
+        </div>
+      </div>
+    </section>
+    <section class="project-nav-bottom reveal-up"><a href="#" data-page="project-claap" class="next-project"><p class="next-label">Next project</p><h2>Claap</h2></a></section>
+  </main>
+
+  <!-- ==================== PROJECT: CLAAP ==================== -->
+  <main class="page page-project" id="page-project-claap">
+    <section class="project-hero">
+      <a href="#" class="back-link reveal-text" data-page="home">← Back to work</a>
+      <p class="project-hero-label reveal-text">Claap (Acquired by Lemlist) — 2021 / 2024</p>
+      <h1 class="project-hero-title"><span class="reveal-text">Building a product</span><span class="reveal-text">from <em>scratch</em></span></h1>
+      <div class="project-meta reveal-up">
+        <div class="meta-item"><p class="meta-label">Role</p><p>Senior Product Designer (Founding)</p></div>
+        <div class="meta-item"><p class="meta-label">Duration</p><p>3 years 6 months</p></div>
+        <div class="meta-item"><p class="meta-label">Tools</p><p>Figma, After Effects</p></div>
+      </div>
+    </section>
+    <section class="project-content">
+      <div class="project-text reveal-up"><p>Founding Product Designer responsible for shaping the entire product from the ground up and establishing the brand as a solo designer. Claap was recognized as a Top 10 best designed product of 2022 on ProductHunt, Product of the Day and Week 2022, and Product of the Day 2023. Created the full design of the product from scratch including UI and visual design, managed the design system, and produced motion design videos using After Effects.</p></div>
+      <div class="project-gallery">
+        <div class="gallery-item gallery-full reveal-up"><img src="Claap/1.png" alt="Claap hero" loading="lazy"></div>
+        <div class="gallery-row">
+          <div class="gallery-item gallery-half reveal-up"><img src="Claap/2.png" alt="Claap detail" loading="lazy"></div>
+          <div class="gallery-item gallery-half reveal-up"><img src="Claap/3.png" alt="Claap detail" loading="lazy"></div>
+        </div>
+        <div class="gallery-item gallery-full reveal-up"><img src="Claap/4.png" alt="Claap full width" loading="lazy"></div>
+        <div class="gallery-row">
+          <div class="gallery-item gallery-half reveal-up"><img src="Claap/5.png" alt="Claap detail" loading="lazy"></div>
+          <div class="gallery-item gallery-half reveal-up"><img src="Claap/6.png" alt="Claap detail" loading="lazy"></div>
+        </div>
+      </div>
+    </section>
+    <section class="project-nav-bottom reveal-up"><a href="#" data-page="project-alto" class="next-project"><p class="next-label">Next project</p><h2>Alto</h2></a></section>
+  </main>
+
+  <!-- ==================== PROJECT: ALTO ==================== -->
+  <main class="page page-project" id="page-project-alto">
+    <section class="project-hero">
+      <a href="#" class="back-link reveal-text" data-page="home">← Back to work</a>
+      <p class="project-hero-label reveal-text">Alto</p>
+      <h1 class="project-hero-title"><span class="reveal-text">Brewing smarter,</span><span class="reveal-text">one cup at a <em>time</em></span></h1>
+      <div class="project-meta reveal-up">
+        <div class="meta-item"><p class="meta-label">Role</p><p>Product Designer</p></div>
+        <div class="meta-item"><p class="meta-label">Sector</p><p>Smart Home & Connected Beverage</p></div>
+      </div>
+    </section>
+    <section class="project-content">
+      <div class="project-text reveal-up"><p>The Alto Infusion app uses AI, along with your presets and preferences, to help automate your daily brewing habits. Designed the end-to-end product experience to transform coffee routines into a seamless journey of flavor and convenience, from personalized recipe suggestions to one-tap brewing controls.</p></div>
+      <div class="project-gallery">
+        <div class="gallery-item gallery-full reveal-up"><img src="Alto/1.png" alt="Alto hero" loading="lazy"></div>
+        <div class="gallery-row">
+          <div class="gallery-item gallery-half reveal-up"><img src="Alto/2.png" alt="Alto detail" loading="lazy"></div>
+          <div class="gallery-item gallery-half reveal-up"><img src="Alto/3.png" alt="Alto detail" loading="lazy"></div>
+        </div>
+        <div class="gallery-item gallery-full reveal-up"><img src="Alto/4.png" alt="Alto full width" loading="lazy"></div>
+      </div>
+    </section>
+    <section class="project-nav-bottom reveal-up"><a href="#" data-page="project-360learning" class="next-project"><p class="next-label">Next project</p><h2>360Learning</h2></a></section>
+  </main>
+
+  <!-- ==================== PROJECT: 360LEARNING ==================== -->
+  <main class="page page-project" id="page-project-360learning">
+    <section class="project-hero">
+      <a href="#" class="back-link reveal-text" data-page="home">← Back to work</a>
+      <p class="project-hero-label reveal-text">360Learning — 2016 / 2021</p>
+      <h1 class="project-hero-title"><span class="reveal-text">Designing learning</span><span class="reveal-text">at <em>scale</em></span></h1>
+      <div class="project-meta reveal-up">
+        <div class="meta-item"><p class="meta-label">Role</p><p>Product Designer</p></div>
+        <div class="meta-item"><p class="meta-label">Duration</p><p>4 years 7 months</p></div>
+        <div class="meta-item"><p class="meta-label">Location</p><p>Paris, France · Hybrid</p></div>
+      </div>
+    </section>
+    <section class="project-content">
+      <div class="project-text reveal-up"><p>Joined as the second designer in a company of 50, sharing tasks with the lead designer for the first two and a half years. Managed and organized the design system for consistency across the product, conducted user research, built new features, and produced marketing assets. As the team grew, interviewed and onboarded new designers and assisted the growth of six designers through guidance and mentorship. The product earned G2 Best Software Award 2022 and #1 Best LMS based on User Experience.</p></div>
+      <div class="project-gallery">
+        <div class="gallery-item gallery-full reveal-up"><img src="360learning/1.png" alt="360Learning hero" loading="lazy"></div>
+        <div class="gallery-row">
+          <div class="gallery-item gallery-half reveal-up"><img src="360learning/2.png" alt="360Learning detail" loading="lazy"></div>
+          <div class="gallery-item gallery-half reveal-up"><img src="360learning/3.png" alt="360Learning detail" loading="lazy"></div>
+        </div>
+        <div class="gallery-row">
+          <div class="gallery-item gallery-half reveal-up"><img src="360learning/4.png" alt="360Learning detail" loading="lazy"></div>
+          <div class="gallery-item gallery-half reveal-up"><img src="360learning/5.png" alt="360Learning detail" loading="lazy"></div>
+        </div>
+      </div>
+    </section>
+    <section class="project-nav-bottom reveal-up"><a href="#" data-page="project-nodale" class="next-project"><p class="next-label">Next project</p><h2>Nodale</h2></a></section>
+  </main>
+
+  <!-- ==================== 404 ==================== -->
+  <main class="page page-404" id="page-404">
+    <section class="error-section">
+      <p class="error-label reveal-text">404</p>
+      <h1 class="error-title"><span class="reveal-text">This page got</span><span class="reveal-text">lost in the <em>void</em></span></h1>
+      <a href="#" class="error-btn reveal-up" data-page="home">Back to work</a>
+    </section>
+  </main>
+
+  <!-- ==================== FOOTER ==================== -->
+  <footer class="footer" id="footer">
+    <div class="footer-bottom">
+      <div class="footer-nav">
+        <a href="#" data-page="home">Work</a>
+        <a href="#" data-page="about">About</a>
+      </div>
+      <div class="footer-socials">
+        <a href="https://linkedin.com/in/seantiffonnet" target="_blank" rel="noopener" aria-label="LinkedIn"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M16 8a6 6 0 0 1 6 6v7h-4v-7a2 2 0 0 0-2-2 2 2 0 0 0-2 2v7h-4v-7a6 6 0 0 1 6-6z"/><rect width="4" height="12" x="2" y="9"/><circle cx="4" cy="4" r="2"/></svg></a>
+        <a href="https://dribbble.com/SeanTiffonnet" target="_blank" rel="noopener" aria-label="Dribbble"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><path d="M19.13 5.09C15.22 9.14 10 10.44 2.25 10.94"/><path d="M21.75 12.84c-6.62-1.41-12.14 1-16.38 6.32"/><path d="M8.56 2.75c4.37 6 6 12 6.9 18.5"/></svg></a>
+        <a href="https://x.com/SeanTiffonnet" target="_blank" rel="noopener" aria-label="X"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M4 4l11.733 16h4.267l-11.733 -16z"/><path d="M4 20l6.768 -6.768m2.46 -2.46L20 4"/></svg></a>
+      </div>
+      <p class="footer-copy">&copy; 2026 — All rights reserved</p>
+    </div>
+  </footer>
+
+  <script>
+    (function(){
+      'use strict';
+      const cursor=document.getElementById('cursor'),follower=document.getElementById('cursor-follower'),loader=document.getElementById('loader'),loaderBar=loader.querySelector('.loader-bar'),nav=document.getElementById('nav'),menuBtn=document.getElementById('menuBtn'),mobileMenu=document.getElementById('mobileMenu'),pages=document.querySelectorAll('.page'),footer=document.getElementById('footer');
+      let currentPage='home',mouseX=0,mouseY=0,cursorX=0,cursorY=0,followerX=0,followerY=0;
+
+      window.addEventListener('load',()=>{requestAnimationFrame(()=>loaderBar.classList.add('loading'));setTimeout(()=>{loader.classList.add('hidden');triggerRevealAnimations()},1400)});
+
+      document.addEventListener('mousemove',e=>{mouseX=e.clientX;mouseY=e.clientY});
+      function animateCursor(){cursorX+=(mouseX-cursorX)*.2;cursorY+=(mouseY-cursorY)*.2;followerX+=(mouseX-followerX)*.08;followerY+=(mouseY-followerY)*.08;if(cursor){cursor.style.left=cursorX+'px';cursor.style.top=cursorY+'px'}if(follower){follower.style.left=followerX+'px';follower.style.top=followerY+'px'}requestAnimationFrame(animateCursor)}animateCursor();
+      document.addEventListener('mouseover',e=>{if(e.target.closest('a,button,.project-card,.skill-tag')){cursor.classList.add('hovering');follower.classList.add('hovering')}});
+      document.addEventListener('mouseout',e=>{if(e.target.closest('a,button,.project-card,.skill-tag')){cursor.classList.remove('hovering');follower.classList.remove('hovering')}});
+
+      window.addEventListener('scroll',()=>{nav.classList.toggle('scrolled',window.scrollY>20)});
+      menuBtn.addEventListener('click',()=>{menuBtn.classList.toggle('open');mobileMenu.classList.toggle('open');document.body.style.overflow=mobileMenu.classList.contains('open')?'hidden':''});
+
+      function navigateTo(pageId){
+        menuBtn.classList.remove('open');mobileMenu.classList.remove('open');document.body.style.overflow='';
+        pages.forEach(p=>{p.classList.remove('active');p.querySelectorAll('.reveal-text,.reveal-up').forEach(el=>el.classList.remove('visible'))});
+        const target=document.getElementById('page-'+pageId);
+        if(target){target.classList.add('active');currentPage=pageId}else{document.getElementById('page-404').classList.add('active');currentPage='404'}
+        document.querySelectorAll('.nav-link').forEach(link=>{link.classList.remove('active');if(link.dataset.page===pageId)link.classList.add('active');if(pageId.startsWith('project-')&&link.dataset.page==='home')link.classList.add('active')});
+        footer.style.display=currentPage==='404'?'none':'';
+        window.scrollTo({top:0,behavior:'instant'});setTimeout(triggerRevealAnimations,50);
+      }
+
+      document.addEventListener('click',e=>{if(e.target.closest('a[target="_blank"]'))return;const link=e.target.closest('[data-page]');if(link){e.preventDefault();navigateTo(link.dataset.page)}});
+
+      function triggerRevealAnimations(){
+        const activePage=document.querySelector('.page.active');if(!activePage)return;
+        activePage.querySelectorAll('.reveal-text').forEach((el,i)=>{setTimeout(()=>el.classList.add('visible'),100+i*80)});
+        const observer=new IntersectionObserver(entries=>{entries.forEach(entry=>{if(entry.isIntersecting){entry.target.classList.add('visible');observer.unobserve(entry.target)}})},{threshold:.1,rootMargin:'0px 0px -40px 0px'});
+        activePage.querySelectorAll('.reveal-up').forEach(el=>observer.observe(el));
+      }
+
+      document.querySelectorAll('.project-card').forEach(card=>{
+        card.addEventListener('mousemove',e=>{const rect=card.getBoundingClientRect();const x=e.clientX-rect.left-rect.width/2;const y=e.clientY-rect.top-rect.height/2;card.style.transform=`translate(${x*.02}px,${y*.02}px)`});
+        card.addEventListener('mouseleave',()=>{card.style.transform='translate(0,0)'});
+      });
+
+      footer.style.display='';navigateTo('home');
+    })();
+  </script>
+</body>
+</html>
