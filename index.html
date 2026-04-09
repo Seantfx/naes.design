@@ -22,6 +22,7 @@
 
   <!-- Favicon -->
   <link rel="icon" type="image/png" href="favicon.png">
+
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600&display=swap" rel="stylesheet">
@@ -76,7 +77,6 @@
     .about-grid{display:grid;grid-template-columns:1fr 1fr;gap:64px;align-items:end}
     .about-label{font-size:.75rem;letter-spacing:.1em;text-transform:uppercase;color:var(--text-secondary);margin-bottom:24px}
     .about-title{font-size:clamp(2rem,5vw,4rem);font-weight:300;letter-spacing:-.04em;line-height:1.1}
-    .about-portrait-placeholder{width:100%;aspect-ratio:3/4;background:var(--surface);border-radius:var(--radius-lg);display:flex;align-items:center;justify-content:center;font-size:.8rem;color:var(--text-secondary);border:1px solid var(--border)}
     .about-bio,.about-experience,.about-skills{padding:48px;max-width:1400px;margin:0 auto;border-top:1px solid var(--border)}
     .about-bio-grid{display:grid;grid-template-columns:200px 1fr;gap:64px}
     .about-bio-label p{font-size:.75rem;letter-spacing:.1em;text-transform:uppercase;color:var(--text-secondary)}
@@ -426,44 +426,137 @@
   <script>
     (function(){
       'use strict';
-      const cursor=document.getElementById('cursor'),follower=document.getElementById('cursor-follower'),loader=document.getElementById('loader'),loaderBar=loader.querySelector('.loader-bar'),nav=document.getElementById('nav'),menuBtn=document.getElementById('menuBtn'),mobileMenu=document.getElementById('mobileMenu'),pages=document.querySelectorAll('.page'),footer=document.getElementById('footer');
-      let currentPage='home',mouseX=0,mouseY=0,cursorX=0,cursorY=0,followerX=0,followerY=0;
+      var cursor=document.getElementById('cursor');
+      var follower=document.getElementById('cursor-follower');
+      var loader=document.getElementById('loader');
+      var loaderBar=loader.querySelector('.loader-bar');
+      var nav=document.getElementById('nav');
+      var menuBtn=document.getElementById('menuBtn');
+      var mobileMenu=document.getElementById('mobileMenu');
+      var pages=document.querySelectorAll('.page');
+      var footer=document.getElementById('footer');
+      var currentPage='home';
+      var mouseX=0,mouseY=0,cursorX=0,cursorY=0,followerX=0,followerY=0;
 
-      window.addEventListener('load',()=>{requestAnimationFrame(()=>loaderBar.classList.add('loading'));setTimeout(()=>{loader.classList.add('hidden');triggerRevealAnimations()},1400)});
-
-      document.addEventListener('mousemove',e=>{mouseX=e.clientX;mouseY=e.clientY});
-      function animateCursor(){cursorX+=(mouseX-cursorX)*.2;cursorY+=(mouseY-cursorY)*.2;followerX+=(mouseX-followerX)*.08;followerY+=(mouseY-followerY)*.08;if(cursor){cursor.style.left=cursorX+'px';cursor.style.top=cursorY+'px'}if(follower){follower.style.left=followerX+'px';follower.style.top=followerY+'px'}requestAnimationFrame(animateCursor)}animateCursor();
-      document.addEventListener('mouseover',e=>{if(e.target.closest('a,button,.project-card,.skill-tag')){cursor.classList.add('hovering');follower.classList.add('hovering')}});
-      document.addEventListener('mouseout',e=>{if(e.target.closest('a,button,.project-card,.skill-tag')){cursor.classList.remove('hovering');follower.classList.remove('hovering')}});
-
-      window.addEventListener('scroll',()=>{nav.classList.toggle('scrolled',window.scrollY>20)});
-      menuBtn.addEventListener('click',()=>{menuBtn.classList.toggle('open');mobileMenu.classList.toggle('open');document.body.style.overflow=mobileMenu.classList.contains('open')?'hidden':''});
-
-      function navigateTo(pageId){
-        menuBtn.classList.remove('open');mobileMenu.classList.remove('open');document.body.style.overflow='';
-        pages.forEach(p=>{p.classList.remove('active');p.querySelectorAll('.reveal-text,.reveal-up').forEach(el=>el.classList.remove('visible'))});
-        const target=document.getElementById('page-'+pageId);
-        if(target){target.classList.add('active');currentPage=pageId}else{document.getElementById('page-404').classList.add('active');currentPage='404'}
-        document.querySelectorAll('.nav-link').forEach(link=>{link.classList.remove('active');if(link.dataset.page===pageId)link.classList.add('active');if(pageId.startsWith('project-')&&link.dataset.page==='home')link.classList.add('active')});
-        footer.style.display=currentPage==='404'?'none':'';
-        window.scrollTo({top:0,behavior:'instant'});setTimeout(triggerRevealAnimations,50);
-      }
-
-      document.addEventListener('click',e=>{if(e.target.closest('a[target="_blank"]'))return;const link=e.target.closest('[data-page]');if(link){e.preventDefault();navigateTo(link.dataset.page)}});
-
-      function triggerRevealAnimations(){
-        const activePage=document.querySelector('.page.active');if(!activePage)return;
-        activePage.querySelectorAll('.reveal-text').forEach((el,i)=>{setTimeout(()=>el.classList.add('visible'),100+i*80)});
-        const observer=new IntersectionObserver(entries=>{entries.forEach(entry=>{if(entry.isIntersecting){entry.target.classList.add('visible');observer.unobserve(entry.target)}})},{threshold:.1,rootMargin:'0px 0px -40px 0px'});
-        activePage.querySelectorAll('.reveal-up').forEach(el=>observer.observe(el));
-      }
-
-      document.querySelectorAll('.project-card').forEach(card=>{
-        card.addEventListener('mousemove',e=>{const rect=card.getBoundingClientRect();const x=e.clientX-rect.left-rect.width/2;const y=e.clientY-rect.top-rect.height/2;card.style.transform=`translate(${x*.02}px,${y*.02}px)`});
-        card.addEventListener('mouseleave',()=>{card.style.transform='translate(0,0)'});
+      /* LOADER */
+      window.addEventListener('load',function(){
+        requestAnimationFrame(function(){loaderBar.classList.add('loading')});
+        setTimeout(function(){loader.classList.add('hidden');triggerRevealAnimations()},1400);
       });
 
-      footer.style.display='';navigateTo('home');
+      /* CURSOR */
+      document.addEventListener('mousemove',function(e){mouseX=e.clientX;mouseY=e.clientY});
+      function animateCursor(){
+        cursorX+=(mouseX-cursorX)*0.2;cursorY+=(mouseY-cursorY)*0.2;
+        followerX+=(mouseX-followerX)*0.08;followerY+=(mouseY-followerY)*0.08;
+        if(cursor){cursor.style.left=cursorX+'px';cursor.style.top=cursorY+'px'}
+        if(follower){follower.style.left=followerX+'px';follower.style.top=followerY+'px'}
+        requestAnimationFrame(animateCursor);
+      }
+      animateCursor();
+
+      document.addEventListener('mouseover',function(e){
+        if(e.target.closest('a,button,.project-card,.skill-tag')){cursor.classList.add('hovering');follower.classList.add('hovering')}
+      });
+      document.addEventListener('mouseout',function(e){
+        if(e.target.closest('a,button,.project-card,.skill-tag')){cursor.classList.remove('hovering');follower.classList.remove('hovering')}
+      });
+
+      /* NAV SCROLL */
+      window.addEventListener('scroll',function(){
+        if(window.scrollY>20){nav.classList.add('scrolled')}else{nav.classList.remove('scrolled')}
+      });
+
+      /* MOBILE MENU */
+      menuBtn.addEventListener('click',function(){
+        menuBtn.classList.toggle('open');
+        mobileMenu.classList.toggle('open');
+        document.body.style.overflow=mobileMenu.classList.contains('open')?'hidden':'';
+      });
+
+      /* NAVIGATE TO PAGE */
+      function navigateTo(pageId){
+        menuBtn.classList.remove('open');
+        mobileMenu.classList.remove('open');
+        document.body.style.overflow='';
+
+        for(var i=0;i<pages.length;i++){
+          pages[i].classList.remove('active');
+          var els=pages[i].querySelectorAll('.reveal-text,.reveal-up');
+          for(var j=0;j<els.length;j++){els[j].classList.remove('visible')}
+        }
+
+        var target=document.getElementById('page-'+pageId);
+        if(target){target.classList.add('active');currentPage=pageId}
+        else{document.getElementById('page-404').classList.add('active');currentPage='404'}
+
+        var navLinks=document.querySelectorAll('.nav-link');
+        for(var i=0;i<navLinks.length;i++){
+          navLinks[i].classList.remove('active');
+          if(navLinks[i].getAttribute('data-page')===pageId)navLinks[i].classList.add('active');
+          if(pageId.indexOf('project-')===0&&navLinks[i].getAttribute('data-page')==='home')navLinks[i].classList.add('active');
+        }
+
+        footer.style.display=currentPage==='404'?'none':'';
+        window.scrollTo(0,0);
+        setTimeout(triggerRevealAnimations,50);
+      }
+
+      /* CLICK HANDLER */
+      document.addEventListener('click',function(e){
+        if(e.target.closest('a[target="_blank"]'))return;
+        var link=e.target.closest('[data-page]');
+        if(link){
+          e.preventDefault();
+          var pageId=link.getAttribute('data-page');
+          window.location.hash=pageId;
+        }
+      });
+
+      /* HASH ROUTING */
+      window.addEventListener('hashchange',function(){
+        var hash=window.location.hash.replace('#','');
+        if(hash){navigateTo(hash)}else{navigateTo('home')}
+      });
+
+      /* REVEAL ANIMATIONS */
+      function triggerRevealAnimations(){
+        var activePage=document.querySelector('.page.active');
+        if(!activePage)return;
+
+        var texts=activePage.querySelectorAll('.reveal-text');
+        for(var i=0;i<texts.length;i++){
+          (function(el,delay){setTimeout(function(){el.classList.add('visible')},delay)})(texts[i],100+i*80);
+        }
+
+        var observer=new IntersectionObserver(function(entries){
+          for(var i=0;i<entries.length;i++){
+            if(entries[i].isIntersecting){entries[i].target.classList.add('visible');observer.unobserve(entries[i].target)}
+          }
+        },{threshold:0.1,rootMargin:'0px 0px -40px 0px'});
+
+        var reveals=activePage.querySelectorAll('.reveal-up');
+        for(var i=0;i<reveals.length;i++){observer.observe(reveals[i])}
+      }
+
+      /* MAGNETIC HOVER */
+      var cards=document.querySelectorAll('.project-card');
+      for(var i=0;i<cards.length;i++){
+        (function(card){
+          card.addEventListener('mousemove',function(e){
+            var rect=card.getBoundingClientRect();
+            var x=e.clientX-rect.left-rect.width/2;
+            var y=e.clientY-rect.top-rect.height/2;
+            card.style.transform='translate('+x*0.02+'px,'+y*0.02+'px)';
+          });
+          card.addEventListener('mouseleave',function(){card.style.transform='translate(0,0)'});
+        })(cards[i]);
+      }
+
+      /* INIT */
+      footer.style.display='';
+      var initialPage=window.location.hash.replace('#','');
+      if(initialPage){navigateTo(initialPage)}else{navigateTo('home')}
     })();
   </script>
 </body>
