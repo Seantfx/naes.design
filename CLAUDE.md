@@ -33,11 +33,15 @@ Portfolio-Sean/
 └── sitemap.xml
 ```
 
-## Design system
-- Fond `#0a0a0a`, surface `#161616`, bordures `#222`, texte `#f0f0f0`, texte secondaire `#777`, accent `#d4ff00` (vert lime)
-- Typo légère (weight 300) sur les grands titres, italiques en accent pour les mots mis en avant
-- Curseur custom avec follower, loader bar au chargement, animations reveal au scroll via IntersectionObserver, effet magnétique sur les cartes projet, nav sticky avec backdrop blur
-- Responsive : breakpoints à 1024px et 768px, curseur custom désactivé en mobile
+## Design system (v2 — éditorial clair, en prod depuis août 2026)
+- Fond papier `#FAF9F6`, encre `#141414`, muted `#7A776E`, filets `#E4E2DA`, accent bleu `#2B4BF2` (utilisé avec parcimonie : hover des liens de la bio)
+- Typo : Instrument Serif (400 + italic) pour tous les titres et les emphases `<em>`, Inter (400/500) pour le corps et l'UI
+- Home : hero typographique géant, liste de projets indexée (01–05) — au survol le titre glisse et la vignette flotte (rotation -2°, ombre portée) ; vignettes masquées ≤1024px
+- Pages projet : colonne éditoriale max 1080px, méta en petites capitales, galeries 16/9 et 4/3, lien "next" avec flèche
+- About : portrait N&B (About/profil_picture_bw.png), skills en phrase serif séparée par des puces
+- Pas de curseur custom, pas de loader — seule animation : fade-up au changement de page
+- Responsive : breakpoints à 1024px et 768px
+- L'ancienne DA dark (#0a0a0a / accent lime #d4ff00) est dans l'historique git avant le commit "New editorial design"
 
 ## Pages
 - Home : hero + 5 cartes projet (Nodale, Zeliq, Claap, Alto, 360Learning)
