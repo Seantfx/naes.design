@@ -1,0 +1,28 @@
+# Sean Tiffonnet — naes.design
+
+> Portfolio of Sean Tiffonnet, a Franco-Irish Senior Product Designer based in Andalusia, Spain, with 10+ years of experience crafting digital products, design systems and brands. Currently designing for Zeliq and Nodale; previously founding designer at Claap (acquired by Lemlist) and product designer at 360Learning.
+
+## About
+
+Sean Tiffonnet started designing at 14, self-taught in Photoshop, and co-founded Shark-Config at 16 — a digital agency that served 100+ clients. After graduating from Epitech Digital in 2016, he joined 360Learning as the second designer and helped grow the design team to 8 members over nearly five years. In 2021 he became the founding designer and first employee at Claap, building the entire product and brand from scratch; Claap was recognized among the Top 10 best-designed products of 2022 on ProductHunt and was later acquired by Lemlist. Since 2025 he designs remotely for Zeliq (sales prospecting platform) and Nodale (AI-powered product insights platform).
+
+Skills: product design, user-centered design, UI/UX, interaction design, design systems, user research, prototyping, motion design, visual communication, Figma, After Effects.
+
+## Projects
+
+- [Nodale](https://naes.design/#project-nodale): AI-powered product insights platform — feedback signals, insights and roadmaps. Senior Product Designer, Nov 2025–present.
+- [Zeliq](https://naes.design/#project-zeliq): Sales prospecting platform — outreach sequences, lead import and enrichment. Senior Product Designer, Jan 2025–present.
+- [Claap](https://naes.design/#project-claap): Async video collaboration platform — full product and brand built from scratch as founding designer, 2021–2024. Acquired by Lemlist.
+- [Alto](https://naes.design/#project-alto): Alto Infusion — smart coffee machine companion app using AI to automate brewing habits. Product Designer.
+- [360Learning](https://naes.design/#project-360learning): Collaborative learning platform (LMS) — design system, features and research, 2016–2021. G2 Best Software Award 2022.
+
+## Links
+
+- [About page](https://naes.design/#about): full bio, experience and skills
+- [LinkedIn](https://linkedin.com/in/seantiffonnet)
+- [Dribbble](https://dribbble.com/SeanTiffonnet)
+- [X / Twitter](https://x.com/SeanTiffonnet)
+
+## Note
+
+This site is a single-page application: all content lives in index.html and section URLs use hash fragments (#about, #project-nodale, etc.).
