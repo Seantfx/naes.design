@@ -33,8 +33,9 @@ Portfolio-Sean/
 └── sitemap.xml
 ```
 
-## Design system (v2 — éditorial clair, en prod depuis août 2026)
-- Fond papier `#FAF9F6`, encre `#141414`, muted `#7A776E`, filets `#E4E2DA`, accent bleu `#2B4BF2` (utilisé avec parcimonie : hover des liens de la bio)
+## Design system (v2 — éditorial dark, en prod depuis août 2026)
+- Fond encre chaude `#131211`, texte `#EDEAE3`, corps de texte `#C9C6BD` (`--body`), muted `#8B8880`, filets `#2B2A26`, accent bleu clair `#8B9DFF` (utilisé avec parcimonie : hover des liens de la bio)
+- og-image.png (1200×630) assortie : hero serif sur fond `#131211`, générée via Chrome headless
 - Typo : Instrument Serif (400 + italic) pour tous les titres et les emphases `<em>`, Inter (400/500) pour le corps et l'UI
 - Home : hero typographique géant, liste de projets indexée (01–05) — au survol le titre glisse et la vignette flotte (rotation -2°, ombre portée) ; vignettes masquées ≤1024px
 - Pages projet : colonne éditoriale max 1080px, méta en petites capitales, galeries 16/9 et 4/3, lien "next" avec flèche
