@@ -218,10 +218,13 @@
     .footer-copy{font-size:.75rem;color:var(--muted)}
 
     /* ===== WIREFRAME LOADER ===== */
-    .wf{position:fixed;inset:0;z-index:9998;background:var(--bg);transition:opacity .7s var(--ease);
+    .wf{position:fixed;inset:0;z-index:9998;pointer-events:none;transition:opacity 1.1s var(--ease)}
+    .wf::before{content:'';position:absolute;inset:0;background:var(--bg);transition:opacity 1s var(--ease);
       background-image:linear-gradient(rgba(237,234,227,.035) 1px,transparent 1px),linear-gradient(90deg,rgba(237,234,227,.035) 1px,transparent 1px);
       background-size:48px 48px}
-    .wf.done{opacity:0;pointer-events:none}
+    .wf.reveal::before{opacity:0}
+    .wf.reveal rect{transition:stroke .8s var(--ease)}
+    .wf.done{opacity:0}
     .wf svg{position:absolute;inset:0;width:100%;height:100%;overflow:visible}
     .wf rect{fill:none;stroke:var(--accent);stroke-width:1;stroke-dasharray:var(--p);stroke-dashoffset:var(--p);
       animation:wfdraw .5s var(--ease) forwards,wfsettle .4s .5s forwards}
@@ -237,9 +240,9 @@
     .wf-hud b{color:var(--text);font-weight:400}
     .wf-hud .wf-bar{width:160px;height:1px;background:var(--line);margin-top:8px;position:relative;overflow:hidden}
     .wf-hud .wf-bar i{position:absolute;left:0;top:0;bottom:0;width:0;background:var(--accent);transition:width .2s linear}
-    .nav,.page,.footer{transition:opacity .8s var(--ease)}
-    .wf-loading .nav,.wf-loading .page,.wf-loading .footer{opacity:0}
-    .wf-loading .page.active{animation:none}
+    .wf-loading .nav,.wf-loading .page,.wf-loading .footer{opacity:0;filter:blur(12px)}
+    .wf-reveal .nav,.wf-reveal .page,.wf-reveal .footer{transition:opacity 1.4s var(--ease),filter 1.4s var(--ease)}
+    .wf-loading .page.active,.wf-reveal .page.active{animation:none}
     @media(max-width:768px){.wf-hud{left:24px;bottom:24px}}
 
     @media(max-width:1024px){
@@ -881,15 +884,28 @@
         barEl.style.width=Math.round(((idx+1)/total)*100)+'%';
       }
 
+      /* three beats: grid dissolves, content comes into focus underneath, wireframe fades last */
       function finish(){
         curEl.textContent='render';
+        scan.style.transition='top .6s cubic-bezier(.16,1,.3,1)';
         scan.style.top=window.innerHeight+'px';
         setTimeout(function(){
-          wf.classList.add('done');
+          wf.classList.add('reveal');
+          body.classList.add('wf-reveal');
           body.classList.remove('wf-loading');
-          setTimeout(function(){if(wf.parentNode)wf.parentNode.removeChild(wf)},800);
-        },320);
+        },450);
+        setTimeout(function(){wf.classList.add('done')},1300);
+        setTimeout(function(){
+          var ap=document.querySelector('.page.active');
+          if(ap)ap.style.animation='none';
+          body.classList.remove('wf-reveal');
+          if(wf.parentNode)wf.parentNode.removeChild(wf);
+        },2500);
       }
+      window.addEventListener('hashchange',function(){
+        var ps=document.querySelectorAll('.page');
+        for(var i=0;i<ps.length;i++)ps[i].style.animation='';
+      });
 
       function start(){
         if(started)return;started=true;
