@@ -244,6 +244,14 @@
     .wf-loading .nav,.wf-loading .page,.wf-loading .footer{opacity:0;filter:blur(12px)}
     .wf-reveal .nav,.wf-reveal .page,.wf-reveal .footer{transition:opacity 1.4s var(--ease),filter 1.4s var(--ease)}
     .wf-loading .page.active,.wf-reveal .page.active{animation:none}
+    /* quick variant for page changes: same look, shorter beats, nav stays visible */
+    .wf.quick{transition-duration:.6s;z-index:99} /* under the nav (z-index 100) so it stays visible */
+    .wf.quick::before{transition-duration:.55s}
+    .wf.quick rect{animation:wfdraw .3s var(--ease) forwards,wfsettle .25s .3s forwards}
+    .wf.quick line{animation-duration:.15s;animation-delay:.05s}
+    .wf.quick text{animation-duration:.2s;animation-delay:.12s}
+    .wf-loading.wf-quick .nav{opacity:1;filter:none}
+    .wf-reveal.wf-quick .page,.wf-reveal.wf-quick .footer{transition-duration:.8s}
     @media(max-width:768px){.wf-hud{left:24px;bottom:24px}}
 
     @media(max-width:1024px){
@@ -785,37 +793,17 @@
   </script>
 
   <script>
-    /* WIREFRAME LOADER: measures the real DOM and "compiles" it box by box */
+    /* WIREFRAME LOADER: measures the real DOM and "compiles" it box by box.
+       Full pass on the first visit of a session, a shorter pass on every page change. */
     (function(){
       'use strict';
       var forced=/[?&]wf(=|&|$)/.test(window.location.search);
-      if(!forced&&window.matchMedia&&window.matchMedia('(prefers-reduced-motion: reduce)').matches)return;
-      /* play once per browser session; ?wf forces a replay */
-      var seen=false;
-      try{seen=sessionStorage.getItem('wf-seen')==='1';if(!seen)sessionStorage.setItem('wf-seen','1')}catch(e){}
-      if(seen&&!forced)return;
+      var reduced=window.matchMedia&&window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+      if(reduced&&!forced)return;
 
       var body=document.body;
-      body.classList.add('wf-loading');
-
-      var wf=document.createElement('div');
-      wf.className='wf';
-      wf.innerHTML='<svg xmlns="http://www.w3.org/2000/svg"></svg>'+
-        '<div class="wf-scan"></div>'+
-        '<div class="wf-hud"><div>building layout</div>'+
-        '<div>node <b id="wf-n">00</b> / <b id="wf-t">00</b></div>'+
-        '<div id="wf-cur">&nbsp;</div>'+
-        '<div class="wf-bar"><i id="wf-bar"></i></div></div>';
-      body.appendChild(wf);
-
-      var svg=wf.querySelector('svg');
-      var scan=wf.querySelector('.wf-scan');
-      var nEl=document.getElementById('wf-n');
-      var tEl=document.getElementById('wf-t');
-      var curEl=document.getElementById('wf-cur');
-      var barEl=document.getElementById('wf-bar');
       var NS='http://www.w3.org/2000/svg';
-      var started=false;
+      var running=false;
 
       function pad(n){return n<10?'0'+n:''+n}
       function mk(tag,attrs){
@@ -829,13 +817,14 @@
         return c?n+'.'+c:n;
       }
 
-      function collect(){
+      /* the nav is only traced on the first visit; it stays put on page changes */
+      function collect(quick){
         var active=document.querySelector('.page.active');
-        var globalSel=['.nav-logo','.nav-link'];
+        var globalSel=quick?[]:['.nav-logo','.nav-link'];
         var pageSel=['.hero-meta','.hero h1','.hero h1 .indent','.hero h1 em','.work-label',
           '.work-row','.work-title','.work-meta',
           '.about-head h1','.about-portrait','.section-label','.bio p','.exp-item','.skills',
-          '.side-intro p','.back','.proj-label','.proj-head h1','.proj-meta > div','.stat','.proj-intro','.proj-story p','.ext','.gallery img','.g-phones img','.next-title',
+          '.side-intro p','.back','.proj-label','.proj-head h1','.proj-meta > div','.stat','.proj-intro','.proj-story p','.ext','.gallery img','.phones img','.feature img','.feature-text h3','.next-title',
           '.err-code','.err h1'];
         var list=[],i,j,nodes;
         for(i=0;i<globalSel.length;i++){
@@ -848,10 +837,10 @@
             for(j=0;j<nodes.length;j++)list.push(nodes[j]);
           }
         }
-        var vh=window.innerHeight,out=[],seen=[];
+        var vh=window.innerHeight,out=[],dedup=[];
         for(i=0;i<list.length;i++){
-          if(seen.indexOf(list[i])!==-1)continue;
-          seen.push(list[i]);
+          if(dedup.indexOf(list[i])!==-1)continue;
+          dedup.push(list[i]);
           var r=list[i].getBoundingClientRect();
           if(r.width<2||r.height<2||r.top>vh-8)continue;
           out.push({el:list[i],r:r});
@@ -860,72 +849,105 @@
         return out;
       }
 
-      function drawNode(item,idx,total){
-        var r=item.r;
-        var x=Math.round(r.left)+.5,y=Math.round(r.top)+.5,w=Math.round(r.width),h=Math.round(r.height);
-        var g=mk('g',{});
-        var rect=mk('rect',{x:x,y:y,width:w,height:h});
-        rect.style.setProperty('--p',(2*(w+h))+'px');
-        g.appendChild(rect);
-        /* corner tick */
-        g.appendChild(mk('line',{x1:x-6,y1:y,x2:x+6,y2:y}));
-        g.appendChild(mk('line',{x1:x,y1:y-6,x2:x,y2:y+6}));
-        /* label: skipped on tiny nodes where it would overlap its neighbours */
-        if(w>=72){
-          var label=mk('text',{x:x,y:y-5});
-          if(y<14){label.setAttribute('y',y+h+12)}
-          label.textContent=nameOf(item.el)+'  '+w+'×'+h;
-          g.appendChild(label);
+      function run(quick){
+        if(running)return;running=true;
+        body.classList.add('wf-loading');
+        if(quick)body.classList.add('wf-quick');
+
+        var wf=document.createElement('div');
+        wf.className='wf'+(quick?' quick':'');
+        wf.innerHTML='<svg xmlns="http://www.w3.org/2000/svg"></svg>'+
+          '<div class="wf-scan"></div>'+
+          '<div class="wf-hud"><div>'+(quick?'building page':'building layout')+'</div>'+
+          '<div>node <b class="wf-n">00</b> / <b class="wf-t">00</b></div>'+
+          '<div class="wf-cur">&nbsp;</div>'+
+          '<div class="wf-bar"><i></i></div></div>';
+        body.appendChild(wf);
+
+        var svg=wf.querySelector('svg');
+        var scan=wf.querySelector('.wf-scan');
+        var nEl=wf.querySelector('.wf-n');
+        var tEl=wf.querySelector('.wf-t');
+        var curEl=wf.querySelector('.wf-cur');
+        var barEl=wf.querySelector('.wf-bar i');
+
+        function drawNode(item,idx,total){
+          var r=item.r;
+          var x=Math.round(r.left)+.5,y=Math.round(r.top)+.5,w=Math.round(r.width),h=Math.round(r.height);
+          var g=mk('g',{});
+          var rect=mk('rect',{x:x,y:y,width:w,height:h});
+          rect.style.setProperty('--p',(2*(w+h))+'px');
+          g.appendChild(rect);
+          /* corner tick */
+          g.appendChild(mk('line',{x1:x-6,y1:y,x2:x+6,y2:y}));
+          g.appendChild(mk('line',{x1:x,y1:y-6,x2:x,y2:y+6}));
+          /* label: skipped on tiny nodes where it would overlap its neighbours */
+          if(w>=72){
+            var label=mk('text',{x:x,y:y-5});
+            if(y<14){label.setAttribute('y',y+h+12)}
+            label.textContent=nameOf(item.el)+'  '+w+'\u00d7'+h;
+            g.appendChild(label);
+          }
+          svg.appendChild(g);
+
+          scan.style.top=Math.round(r.top+r.height)+'px';
+          nEl.textContent=pad(idx+1);
+          curEl.textContent=nameOf(item.el);
+          barEl.style.width=Math.round(((idx+1)/total)*100)+'%';
         }
-        svg.appendChild(g);
 
-        scan.style.top=Math.round(r.top+r.height)+'px';
-        nEl.textContent=pad(idx+1);
-        curEl.textContent=nameOf(item.el);
-        barEl.style.width=Math.round(((idx+1)/total)*100)+'%';
+        /* three beats: grid dissolves, content comes into focus underneath, wireframe fades last */
+        function finish(){
+          var t=quick?{scan:.35,reveal:200,done:650,end:1300}:{scan:.6,reveal:450,done:1300,end:2500};
+          curEl.textContent='render';
+          scan.style.transition='top '+t.scan+'s cubic-bezier(.16,1,.3,1)';
+          scan.style.top=window.innerHeight+'px';
+          setTimeout(function(){
+            wf.classList.add('reveal');
+            body.classList.add('wf-reveal');
+            body.classList.remove('wf-loading');
+          },t.reveal);
+          setTimeout(function(){wf.classList.add('done')},t.done);
+          setTimeout(function(){
+            var ap=document.querySelector('.page.active');
+            if(ap)ap.style.animation='none';
+            body.classList.remove('wf-reveal');
+            body.classList.remove('wf-quick');
+            if(wf.parentNode)wf.parentNode.removeChild(wf);
+            running=false;
+          },t.end);
+        }
+
+        var items=collect(quick),total=items.length;
+        tEl.textContent=pad(total);
+        if(!total){finish();return}
+        var step=quick?Math.max(22,Math.min(40,650/total)):Math.max(38,Math.min(70,1300/total));
+        var lead=quick?40:120;
+        for(var i=0;i<total;i++){
+          (function(item,idx){setTimeout(function(){drawNode(item,idx,total)},lead+idx*step)})(items[i],i);
+        }
+        setTimeout(finish,lead+total*step+(quick?180:420));
       }
 
-      /* three beats: grid dissolves, content comes into focus underneath, wireframe fades last */
-      function finish(){
-        curEl.textContent='render';
-        scan.style.transition='top .6s cubic-bezier(.16,1,.3,1)';
-        scan.style.top=window.innerHeight+'px';
-        setTimeout(function(){
-          wf.classList.add('reveal');
-          body.classList.add('wf-reveal');
-          body.classList.remove('wf-loading');
-        },450);
-        setTimeout(function(){wf.classList.add('done')},1300);
-        setTimeout(function(){
-          var ap=document.querySelector('.page.active');
-          if(ap)ap.style.animation='none';
-          body.classList.remove('wf-reveal');
-          if(wf.parentNode)wf.parentNode.removeChild(wf);
-        },2500);
-      }
+      /* page change: restore the enter animation override, then a quick pass over the new page */
       window.addEventListener('hashchange',function(){
         var ps=document.querySelectorAll('.page');
         for(var i=0;i<ps.length;i++)ps[i].style.animation='';
+        run(true);
       });
 
-      function start(){
-        if(started)return;started=true;
-        var items=collect();
-        var total=items.length;
-        tEl.textContent=pad(total);
-        if(!total){finish();return}
-        var step=Math.max(38,Math.min(70,1300/total));
-        for(var i=0;i<total;i++){
-          (function(item,idx){setTimeout(function(){drawNode(item,idx,total)},120+idx*step)})(items[i],i);
-        }
-        setTimeout(finish,120+total*step+420);
-      }
-
+      /* first visit: once per browser session, ?wf forces a replay */
+      var seen=false;
+      try{seen=sessionStorage.getItem('wf-seen')==='1';if(!seen)sessionStorage.setItem('wf-seen','1')}catch(e){}
+      if(seen&&!forced)return;
+      body.classList.add('wf-loading');
+      var started=false;
+      function startFull(){if(started)return;started=true;run(false)}
       /* wait for the serif to be ready so boxes match the final layout */
       if(document.fonts&&document.fonts.ready){
-        document.fonts.ready.then(function(){setTimeout(start,80)});
-      }else{setTimeout(start,400)}
-      setTimeout(start,2500); /* safety net */
+        document.fonts.ready.then(function(){setTimeout(startFull,80)});
+      }else{setTimeout(startFull,400)}
+      setTimeout(startFull,2500); /* safety net */
     })();
   </script>
 </body>
