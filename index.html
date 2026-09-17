@@ -157,6 +157,51 @@
     .next:hover .next-title{transform:translateX(14px)}
     .next-title::after{content:'\2192';margin-left:.3em;font-family:var(--sans);font-weight:400}
 
+    /* ===== SIDE PROJECTS ===== */
+    .side-intro{display:flex;justify-content:space-between;align-items:baseline;gap:24px;flex-wrap:wrap;
+      padding-bottom:18px;border-bottom:1px solid var(--line);margin-top:-80px}
+    .side-intro .work-label{padding:0;border:0}
+    .side-intro p{font-size:.85rem;color:var(--muted);max-width:420px;text-align:right}
+    .status{display:inline-block;font:10px/1 ui-monospace,SFMono-Regular,Menlo,Consolas,monospace;letter-spacing:.12em;text-transform:uppercase;
+      color:var(--muted);border:1px solid var(--line);border-radius:100px;padding:6px 10px;vertical-align:middle;margin-left:14px;white-space:nowrap}
+    .status::before{content:'';display:inline-block;width:6px;height:6px;border-radius:50%;background:var(--muted);margin-right:8px;vertical-align:middle;position:relative;top:-1px}
+    .status.live{color:var(--text);border-color:#3a3f2e}.status.live::before{background:#B5E853;box-shadow:0 0 10px rgba(181,232,83,.6)}
+    .status.beta::before{background:var(--accent)}
+    .work-row .status{position:relative;top:-6px}
+    .proj-label .status{margin-left:16px;top:-2px;position:relative}
+    .meta-value.mono{font:.8rem/1.6 ui-monospace,SFMono-Regular,Menlo,Consolas,monospace;color:var(--body);letter-spacing:.01em}
+    .stats{display:grid;grid-template-columns:repeat(auto-fit,minmax(180px,1fr));gap:32px 40px;padding:48px 0 56px;border-bottom:1px solid var(--line)}
+    .stat b{display:block;font-family:var(--serif);font-weight:400;font-size:clamp(2.6rem,5vw,4rem);line-height:1;letter-spacing:-.02em}
+    .stat b em{font-size:.55em;color:var(--muted);letter-spacing:0;margin-left:.1em}
+    .stat span{display:block;margin-top:10px;font-size:.75rem;letter-spacing:.12em;text-transform:uppercase;color:var(--muted)}
+    .stack{display:flex;flex-wrap:wrap;gap:8px 8px;margin-top:6px}
+    .stack span{font:11px/1 ui-monospace,SFMono-Regular,Menlo,Consolas,monospace;letter-spacing:.04em;color:var(--body);border:1px solid var(--line);padding:8px 10px;border-radius:4px}
+    .ext{display:inline-flex;align-items:baseline;gap:.5em;margin-top:40px;font-size:.9rem;color:var(--text);
+      border-bottom:1px solid var(--text);padding-bottom:4px;transition:color .25s,border-color .25s}
+    .ext::after{content:'\2197';font-size:.85em}
+    .ext:hover{color:var(--accent);border-color:var(--accent)}
+    .ext+.ext{margin-left:28px}
+    .proj-story{max-width:620px;padding:56px 0 0;color:var(--body);line-height:1.75}
+    .proj-story p+p{margin-top:16px}
+    .proj-story h2{font-family:var(--serif);font-weight:400;font-size:1.6rem;color:var(--text);margin:40px 0 14px;letter-spacing:-.01em}
+    .gallery.tight{padding-bottom:48px}
+    .phones{display:grid;grid-template-columns:repeat(3,1fr);gap:40px 24px;padding-bottom:96px}
+    .phones figure{margin:0}
+    .phones img{width:100%;aspect-ratio:9/19.5;object-fit:cover;border-radius:6px}
+    .phones figcaption{margin-top:18px;padding-right:12px}
+    .phones figcaption b{display:block;font-family:var(--serif);font-weight:400;font-size:1.35rem;letter-spacing:-.01em;line-height:1.15;margin-bottom:8px}
+    .phones figcaption p{font-size:.88rem;color:var(--body);line-height:1.65}
+    .features{display:flex;flex-direction:column;gap:80px;padding-bottom:96px}
+    .feature{display:grid;grid-template-columns:1.25fr 1fr;gap:48px;align-items:center}
+    .feature:nth-child(even){grid-template-columns:1fr 1.25fr}
+    .feature:nth-child(even) .feature-text{order:-1}
+    .feature img{width:100%;aspect-ratio:16/10;object-fit:cover;object-position:top}
+    .feature-text .kicker{font-size:.7rem;letter-spacing:.14em;text-transform:uppercase;color:var(--muted);margin-bottom:14px}
+    .feature-text h3{font-family:var(--serif);font-weight:400;font-size:clamp(1.6rem,2.4vw,2rem);letter-spacing:-.01em;line-height:1.15;margin-bottom:14px}
+    .feature-text p{color:var(--body);line-height:1.7;max-width:420px}
+    @media(max-width:1024px){.feature,.feature:nth-child(even){grid-template-columns:1fr;gap:24px}.feature:nth-child(even) .feature-text{order:0}}
+    @media(max-width:768px){.phones{grid-template-columns:1fr 1fr;gap:32px 16px}.side-intro p{text-align:left}.stats{gap:28px 24px}}
+
     /* ===== 404 ===== */
     .page-404.active{display:flex;align-items:center;justify-content:center}
     .err{text-align:center;padding:40px}
@@ -261,6 +306,30 @@
           <span class="work-title">360Learning</span>
           <span class="work-meta">Product Designer — 2016 / 2021</span>
           <img class="work-thumb" src="360learning/THUMBNAIL.webp" alt="360Learning — collaborative learning platform">
+        </a>
+      </section>
+      <div class="side-intro">
+        <p class="work-label">Side projects — 2026</p>
+        <p>Designed, built and shipped solo — from the first sketch to production, code included.</p>
+      </div>
+      <section class="work-list">
+        <a href="#" class="work-row" data-page="project-tvtrack">
+          <span class="work-num">01</span>
+          <span class="work-title">TV Track<span class="status live">Live</span></span>
+          <span class="work-meta">TV show tracker — 1,700+ users</span>
+          <img class="work-thumb" src="Side/tvtrack/landing.webp" alt="TV Track — free TV show tracker, landing page with the Up next queue on a phone">
+        </a>
+        <a href="#" class="work-row" data-page="project-framewave">
+          <span class="work-num">02</span>
+          <span class="work-title">Framewave<span class="status beta">In development</span></span>
+          <span class="work-meta">Local-first screen recorder &amp; editor</span>
+          <img class="work-thumb" src="Side/framewave/editor-overview.webp" alt="Framewave — local-first screen recorder and video editor for Windows">
+        </a>
+        <a href="#" class="work-row" data-page="project-orbital">
+          <span class="work-num">03</span>
+          <span class="work-title">Orbital Foundry<span class="status">Prototype</span></span>
+          <span class="work-meta">Multiplayer space strategy — browser</span>
+          <img class="work-thumb" src="Side/orbital/station.webp" alt="Orbital Foundry — real-time multiplayer space strategy in the browser">
         </a>
       </section>
     </div>
@@ -441,6 +510,208 @@
     </div>
   </main>
 
+  <!-- ==================== SIDE PROJECT: TV TRACK ==================== -->
+  <main class="page" id="page-project-tvtrack">
+    <div class="wrap">
+      <a href="#" class="back" data-page="home">&larr; Back to work</a>
+      <section class="proj-head">
+        <p class="proj-label">Side project — Jul 2026 / Present<span class="status live">Live</span></p>
+        <h1>Never lose track of your <em>shows.</em></h1>
+        <div class="proj-meta">
+          <div><p class="meta-label">Role</p><p class="meta-value">Design, development &amp; launch — solo</p></div>
+          <div><p class="meta-label">Platforms</p><p class="meta-value">Web (PWA) · Android · iOS</p></div>
+          <div><p class="meta-label">Stack</p><div class="stack"><span>React 19</span><span>TypeScript</span><span>Vite</span><span>Tailwind</span><span>Supabase</span><span>React Query</span><span>Vercel</span><span>Expo · React Native</span><span>TMDB · TVmaze</span></div></div>
+        </div>
+        <div class="stats">
+          <div class="stat"><b>1,700<em>+</em></b><span>Registered users</span></div>
+          <div class="stat"><b>6.7<em>M</em></b><span>Episodes imported</span></div>
+          <div class="stat"><b>105</b><span>Releases in 50 days</span></div>
+          <div class="stat"><b>7</b><span>Languages</span></div>
+        </div>
+        <div class="proj-story">
+          <p>In June 2026, TV Time — the app millions of people used to track their shows — announced it was shutting down within a month. My feed filled with the same question: "where do we go now?" I decided to answer it by building the replacement myself.</p>
+          <p>Version 1.0 shipped on July 3rd, twelve days before the shutdown, with the one feature that mattered on day one: drag-and-drop import of your entire TV Time history — every episode, every watch date, every rating — parsed in the browser and never uploaded. In the first month, 759 libraries and 6.7 million episodes were migrated.</p>
+          <p>From there, TV Track grew in public: a release calendar with morning notifications, watch-time stats, community reactions and threaded comments with auto-translation, 86 badges across 11 families, two-way Trakt sync, public profiles — 105 releases in 50 days, most of them shaped directly by user feedback. It is free, has no lock-in (export everything in one click) and now lives as a PWA, a native Android app and an iOS app built with Expo.</p>
+          <a class="ext" href="https://tvtrack.io" target="_blank" rel="noopener">Visit tvtrack.io</a><a class="ext" href="https://play.google.com/store/apps/details?id=io.tvtrack.app" target="_blank" rel="noopener">Google Play</a>
+        </div>
+      </section>
+      <section class="gallery tight">
+        <div class="g-full"><img src="Side/tvtrack/landing.webp" alt="TV Track landing page — 'Ne perds plus jamais le fil de tes séries' with the Up next queue shown on a phone" loading="lazy"></div>
+      </section>
+      <section class="phones">
+        <figure>
+          <img src="Side/tvtrack/upnext.webp" alt="TV Track Shows tab — the Up next queue with the exact next episode of every series you follow" loading="lazy">
+          <figcaption><b>Up next</b><p>For every show you follow, TV Track works out the exact next unwatched episode. One tap to check it off — confetti included.</p></figcaption>
+        </figure>
+        <figure>
+          <img src="Side/tvtrack/show.webp" alt="TV Track show page — House of the Dragon with trailer, where to watch and season progress" loading="lazy">
+          <figcaption><b>Show page</b><p>Trailer, where to watch, community rating and season-by-season progress, assembled from TMDB and TVmaze data.</p></figcaption>
+        </figure>
+        <figure>
+          <img src="Side/tvtrack/rating.webp" alt="TV Track rating drawer — score out of 10, community reactions and favourite character vote" loading="lazy">
+          <figcaption><b>Rate &amp; react</b><p>After each episode: a score out of 10, the live community average, emotion reactions and a favourite-character vote.</p></figcaption>
+        </figure>
+        <figure>
+          <img src="Side/tvtrack/comments.webp" alt="TV Track episode comments — threaded replies with likes, GIFs and automatic translation" loading="lazy">
+          <figcaption><b>Episode comments</b><p>Threaded, spoiler-safe discussions per episode with GIFs and automatic translation — the part of TV Time people mourned most.</p></figcaption>
+        </figure>
+        <figure>
+          <img src="Side/tvtrack/profile.webp" alt="TV Track profile — total watch time, followers and custom lists" loading="lazy">
+          <figcaption><b>Profile &amp; lists</b><p>Total watch time, followers, and unlimited custom lists with their own covers, all discoverable on your public profile.</p></figcaption>
+        </figure>
+        <figure>
+          <img src="Side/tvtrack/stats.webp" alt="TV Track statistics — watch time month by month, favourite genres and recent history" loading="lazy">
+          <figcaption><b>Stats &amp; badges</b><p>Watch time month by month, favourite genres, recent history — and 86 badges computed from what you have already watched.</p></figcaption>
+        </figure>
+      </section>
+      <a href="#" class="next" data-page="project-framewave"><p class="next-label">Next side project</p><span class="next-title">Framewave</span></a>
+    </div>
+  </main>
+
+  <!-- ==================== SIDE PROJECT: FRAMEWAVE ==================== -->
+  <main class="page" id="page-project-framewave">
+    <div class="wrap">
+      <a href="#" class="back" data-page="home">&larr; Back to work</a>
+      <section class="proj-head">
+        <p class="proj-label">Side project — Sep 2026 · v0.1.4<span class="status beta">In development</span></p>
+        <h1>A local-first screen studio for <em>Windows.</em></h1>
+        <div class="proj-meta">
+          <div><p class="meta-label">Role</p><p class="meta-value">Design &amp; development — solo</p></div>
+          <div><p class="meta-label">Platforms</p><p class="meta-value">Windows · macOS (beta)</p></div>
+          <div><p class="meta-label">Stack</p><div class="stack"><span>Electron 37</span><span>React 19</span><span>TypeScript</span><span>Vite</span><span>Zustand</span><span>Tailwind</span><span>WebCodecs</span><span>ffmpeg</span><span>Whisper · transformers.js</span></div></div>
+        </div>
+        <div class="stats">
+          <div class="stat"><b>10<em>days</em></b><span>First commit to v0.1.4</span></div>
+          <div class="stat"><b>12.2<em>K</em></b><span>Lines of TypeScript</span></div>
+          <div class="stat"><b>5</b><span>Runtime dependencies</span></div>
+          <div class="stat"><b>0<em>bytes</em></b><span>Uploaded anywhere</span></div>
+        </div>
+        <div class="proj-story">
+          <p>Cap and Screen Studio made polished product demos effortless — on a Mac. Framewave brings that experience to Windows, and keeps every byte on your machine: recording, editing, AI captions and export all run locally, with no account and no cloud.</p>
+          <p>Record a display, a window or a drawn region with camera, microphone and system audio. The real cursor is hidden during capture and re-drawn in the editor, so it stays crisp at any zoom. Clicks and typing automatically generate zoom keyframes with spring easing; backgrounds, padding, shadows, keystroke overlays and text animations finish the frame.</p>
+          <p>Captions are transcribed by Whisper running in-process on WebGPU. A montage mode assembles clips with transitions and an independent audio track. Export goes up to 4K in MP4, WebM or GIF, GPU-accelerated through WebCodecs — typically many times faster than real time. Every project is a plain folder: media files, an events log and a JSON edit, readable by anything.</p>
+          <a class="ext" href="https://github.com/seant-ctrl/framewave" target="_blank" rel="noopener">View on GitHub</a>
+        </div>
+      </section>
+      <section class="gallery tight">
+        <div class="g-full"><img src="Side/framewave/editor-overview.webp" alt="Framewave editor — a 17-clip product demo on a purple-to-orange gradient, with the Clips &amp; media panel and a full timeline: video, zoom, text, captions and audio tracks" loading="lazy"></div>
+      </section>
+      <section class="features">
+        <div class="feature">
+          <img src="Side/framewave/library.webp" alt="Framewave home — New recording, New montage and Import cards above the library of recent projects" loading="lazy">
+          <div class="feature-text">
+            <p class="kicker">Record</p>
+            <h3>One shortcut, everything captured.</h3>
+            <p>Ctrl+Shift+R records a display, a window or a drawn region, with camera, microphone and system audio. The floating controls are excluded from the capture, and every click, scroll and keystroke is logged so the editor can use it later.</p>
+          </div>
+        </div>
+        <div class="feature">
+          <img src="Side/framewave/zoom.webp" alt="Framewave Zoom panel — automatic zoom with sensitivity, default level and hold time, motion easing, and a selected zoom with focus point and timing" loading="lazy">
+          <div class="feature-text">
+            <p class="kicker">Auto-zoom</p>
+            <h3>Zooms written by your clicks.</h3>
+            <p>Every click and burst of typing becomes a zoom keyframe with a focus point, spring easing and a hold time. Adjust the feel — sensitivity, level, transition — and regenerate the whole track in one click, or place zooms by hand at the playhead.</p>
+          </div>
+        </div>
+        <div class="feature">
+          <img src="Side/framewave/cursor.webp" alt="Framewave Cursor panel — style, size, adaptive shape, smoothing, click effects (ripple, pulse, spot) and motion trail" loading="lazy">
+          <div class="feature-text">
+            <p class="kicker">Cursor</p>
+            <h3>The cursor is redrawn, not recorded.</h3>
+            <p>The real cursor is hidden during capture and re-rendered on top of the video, so it stays crisp at any zoom. Pick a style, scale it, smooth its path, let it switch to an I-beam over text — then add ripples, a spotlight or a motion trail.</p>
+          </div>
+        </div>
+        <div class="feature">
+          <img src="Side/framewave/background.webp" alt="Framewave Background panel — gradient presets, editable colour stops with angle, and layout sliders for padding, corner radius and shadow" loading="lazy">
+          <div class="feature-text">
+            <p class="kicker">Backgrounds &amp; layout</p>
+            <h3>Studio framing in two sliders.</h3>
+            <p>Gradients with editable stops, wallpapers, solid colours, an image or a blurred copy of the screen itself. Padding, corner radius and shadow set the frame; seven aspect presets from 16:9 to 9:16 make it ready for any platform.</p>
+          </div>
+        </div>
+        <div class="feature">
+          <img src="Side/framewave/keystrokes.webp" alt="Framewave Keystrokes panel — a Ctrl+Shift+P pill shown on the video, with style, position, size and duration options and a shortcuts-only privacy mode" loading="lazy">
+          <div class="feature-text">
+            <p class="kicker">Keystrokes</p>
+            <h3>Shortcuts on screen, passwords never.</h3>
+            <p>Key presses recorded during capture appear as pills or keycaps on the video. A shortcuts-only mode shows Ctrl+Shift+P but hides plain typing, so a demo never leaks what you actually wrote.</p>
+          </div>
+        </div>
+        <div class="feature">
+          <img src="Side/framewave/captions.webp" alt="Framewave Captions panel — Whisper transcription running locally, style controls, and a list of 35 timed captions with SRT and VTT export" loading="lazy">
+          <div class="feature-text">
+            <p class="kicker">AI captions</p>
+            <h3>Transcribed on your GPU, not in the cloud.</h3>
+            <p>Whisper runs in-process on WebGPU: three model sizes, automatic language detection, nothing sent anywhere. Captions are editable line by line, styled with a highlight colour, and exportable as SRT or VTT.</p>
+          </div>
+        </div>
+        <div class="feature">
+          <img src="Side/framewave/text.webp" alt="Framewave Text panel — a 'Waterfall enrichment' badge selected on the video, with animation, timing, font, colours, corner radius and position controls" loading="lazy">
+          <div class="feature-text">
+            <p class="kicker">Text &amp; badges</p>
+            <h3>Titles, lower thirds and badges that move.</h3>
+            <p>Four text presets, four entrance animations, full typographic control and a background pill with its own radius and shadow. Drag the text straight on the preview to place it; the timeline holds its timing.</p>
+          </div>
+        </div>
+        <div class="feature">
+          <img src="Side/framewave/montage.webp" alt="Framewave montage — 17 clips in the media list, a selected clip with speed, in/out points, framing, volume and a cross-fade transition" loading="lazy">
+          <div class="feature-text">
+            <p class="kicker">Montage</p>
+            <h3>Several clips, one story.</h3>
+            <p>Drop videos and images, reorder them on the timeline, trim in and out points, change speed, detach audio to its own track. Eight transition types — cross fade, dip, slide, wipe, zoom, blur — can be applied per clip or to all at once.</p>
+          </div>
+        </div>
+        <div class="feature">
+          <img src="Side/framewave/export.webp" alt="Framewave Export dialog — MP4, WebM, GIF, PNG sequence or MP3; 4K resolution, frame rate, quality, H.264/H.265/AV1 codec and hardware encoding" loading="lazy">
+          <div class="feature-text">
+            <p class="kicker">Export</p>
+            <h3>4K in minutes, on the GPU.</h3>
+            <p>MP4, WebM with transparency, GIF, PNG sequence or MP3; 480p to 2160p, 24 to 60 fps, H.264, H.265 or AV1. Encoding goes through WebCodecs with hardware acceleration — typically many times faster than real time.</p>
+          </div>
+        </div>
+      </section>
+      <a href="#" class="next" data-page="project-orbital"><p class="next-label">Next side project</p><span class="next-title">Orbital Foundry</span></a>
+    </div>
+  </main>
+
+  <!-- ==================== SIDE PROJECT: ORBITAL FOUNDRY ==================== -->
+  <main class="page" id="page-project-orbital">
+    <div class="wrap">
+      <a href="#" class="back" data-page="home">&larr; Back to work</a>
+      <section class="proj-head">
+        <p class="proj-label">Side project — Sep 2026<span class="status">Playable prototype</span></p>
+        <h1>Real-time space strategy, straight from the <em>browser.</em></h1>
+        <div class="proj-meta">
+          <div><p class="meta-label">Role</p><p class="meta-value">Game design, art direction &amp; development — solo</p></div>
+          <div><p class="meta-label">Platforms</p><p class="meta-value">Desktop browser · iPad</p></div>
+          <div><p class="meta-label">Stack</p><div class="stack"><span>React 18</span><span>TypeScript</span><span>Three.js</span><span>Vite</span><span>PeerJS · WebRTC</span><span>Vitest</span><span>Vercel</span></div></div>
+        </div>
+        <div class="stats">
+          <div class="stat"><b>2<em>–4</em></b><span>Players per match</span></div>
+          <div class="stat"><b>20<em>Hz</em></b><span>Deterministic simulation</span></div>
+          <div class="stat"><b>0</b><span>Image assets — all generated by code</span></div>
+          <div class="stat"><b>336<em>KB</em></b><span>Total download</span></div>
+        </div>
+        <div class="proj-story">
+          <p>Orbital Foundry pits two to four friends against each other around a contested asteroid field. Each player owns an orbital station: mine metal and crystal, build and upgrade eight module slots, commit to an irreversible doctrine, assemble fleets — and protect your reactor, because losing it means elimination. A match lasts about 25 minutes.</p>
+          <p>The design bet is strategy over dexterity. Fleets are persistent, firing is automatic, there is no selection rectangle — every action works as a single tap, so a player on an iPad is never at a disadvantage against one on a mouse. Hidden information is filtered before it leaves the host, so a sound or a muzzle flash can never betray a ship you are not supposed to see.</p>
+          <p>Matches run peer-to-peer over WebRTC: no server, the game lives in the host's tab. Every ship silhouette, station module, asteroid and effect is generated by code at startup — the whole game downloads in 336 KB, with a 20 Hz all-integer simulation covered by 235 automated tests. It started as a 27-section product requirements document; the code is its implementation.</p>
+          <a class="ext" href="https://orbital-foundry.vercel.app/" target="_blank" rel="noopener">Play Orbital Foundry</a>
+        </div>
+      </section>
+      <section class="gallery">
+        <div class="g-full"><img src="Side/orbital/station.webp" alt="Orbital Foundry — close-up of a low-poly orbital station under attack, with fighters, tracer fire and the economy panel" loading="lazy"></div>
+        <div class="g-row">
+          <div class="g-half"><img src="Side/orbital/center.webp" alt="Orbital Foundry — four fleets fighting over the dark-matter rifts at the centre of the map" loading="lazy"></div>
+          <div class="g-half"><img src="Side/orbital/fleet.webp" alt="Orbital Foundry — the centre battle with the Fleet 1 card open, showing composition, orders and targeting policy" loading="lazy"></div>
+        </div>
+        <div class="g-full"><img src="Side/orbital/wide.webp" alt="Orbital Foundry — wide view of the circular map with four symmetric stations and the contested centre" loading="lazy"></div>
+        <div class="g-full"><img src="Side/orbital/landing.webp" alt="Orbital Foundry home screen — animated station scene with player-count selector, create and join buttons" loading="lazy"></div>
+      </section>
+      <a href="#" class="next" data-page="project-tvtrack"><p class="next-label">Next side project</p><span class="next-title">TV Track</span></a>
+    </div>
+  </main>
+
   <!-- ==================== 404 ==================== -->
   <main class="page page-404" id="page-404">
     <section class="err">
@@ -560,7 +831,7 @@
         var pageSel=['.hero-meta','.hero h1','.hero h1 .indent','.hero h1 em','.work-label',
           '.work-row','.work-title','.work-meta',
           '.about-head h1','.about-portrait','.section-label','.bio p','.exp-item','.skills',
-          '.back','.proj-label','.proj-head h1','.proj-meta > div','.proj-intro','.gallery img','.next-title',
+          '.side-intro p','.back','.proj-label','.proj-head h1','.proj-meta > div','.stat','.proj-intro','.proj-story p','.ext','.gallery img','.g-phones img','.next-title',
           '.err-code','.err h1'];
         var list=[],i,j,nodes;
         for(i=0;i<globalSel.length;i++){

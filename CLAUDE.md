@@ -19,7 +19,8 @@ Portfolio personnel de product designer (Sean Tiffonnet).
 ```
 Portfolio-Sean/
 ├── 360learning/  (THUMBNAIL.png, 1.png à 5.png)
-├── About/        (profil_picture.png)
+├── About/        (profil_picture.png, profil_picture_bw.png/.webp)
+├── Side/         (side projects : tvtrack/, framewave/, orbital/ — WebP uniquement, captures faites via CDP)
 ├── Alto/         (THUMBNAIL.png, 1.png à 4.png)
 ├── Claap/        (THUMBNAIL.png, 1.png à 6.png)
 ├── Nodale/       (THUMBNAIL.png, 1.png à 4.png)
@@ -49,6 +50,7 @@ Portfolio-Sean/
 - Home : hero + 5 cartes projet (Nodale, Zeliq, Claap, Alto, 360Learning)
 - About me : nom, bio en 4 paragraphes avec liens sortants, liste d'expériences, tags de skills
 - 5 pages projet : back link, titre, meta (rôle/durée/outils), texte d'intro, galerie d'images, lien vers le projet suivant
+- Section "Side projects" sur la home (liste indexée 01–03 avec badge de statut `.status` live/beta/défaut) + 3 pages : TV Track (`#project-tvtrack`, live, tvtrack.io), Framewave (`#project-framewave`, en dev, github.com/seant-ctrl/framewave), Orbital Foundry (`#project-orbital`, prototype, orbital-foundry.vercel.app). Template enrichi : ligne Stack en tags mono `.stack`, bloc de chiffres `.stats`, récit `.proj-story`, CTA externes `.ext` (target=_blank). Sources des faits : les repos dans `C:\Users\seant\.claude\projects\{TV TRACK, Video Editor, Orbital Foundry}`
 - 404
 - Footer : nav + icônes LinkedIn/Dribbble/X + copyright
 
