@@ -172,6 +172,31 @@
     .footer-nav,.footer-socials{display:flex;gap:22px}
     .footer-copy{font-size:.75rem;color:var(--muted)}
 
+    /* ===== WIREFRAME LOADER ===== */
+    .wf{position:fixed;inset:0;z-index:9998;background:var(--bg);transition:opacity .7s var(--ease);
+      background-image:linear-gradient(rgba(237,234,227,.035) 1px,transparent 1px),linear-gradient(90deg,rgba(237,234,227,.035) 1px,transparent 1px);
+      background-size:48px 48px}
+    .wf.done{opacity:0;pointer-events:none}
+    .wf svg{position:absolute;inset:0;width:100%;height:100%;overflow:visible}
+    .wf rect{fill:none;stroke:var(--accent);stroke-width:1;stroke-dasharray:var(--p);stroke-dashoffset:var(--p);
+      animation:wfdraw .5s var(--ease) forwards,wfsettle .4s .5s forwards}
+    @keyframes wfdraw{to{stroke-dashoffset:0}}
+    @keyframes wfsettle{to{stroke:rgba(237,234,227,.22)}}
+    .wf line{stroke:var(--accent);stroke-width:1;opacity:0;animation:wffade .2s .1s forwards}
+    .wf text{font:10px ui-monospace,SFMono-Regular,Menlo,Consolas,monospace;fill:var(--muted);letter-spacing:.04em;opacity:0;animation:wffade .3s .25s forwards}
+    @keyframes wffade{to{opacity:1}}
+    .wf-scan{position:absolute;left:0;right:0;height:1px;top:-2px;opacity:.7;
+      background:linear-gradient(90deg,transparent 0%,var(--accent) 30%,var(--accent) 70%,transparent 100%);transition:top .14s linear}
+    .wf-hud{position:absolute;left:40px;bottom:32px;font:11px ui-monospace,SFMono-Regular,Menlo,Consolas,monospace;
+      color:var(--muted);letter-spacing:.08em;text-transform:uppercase;line-height:1.9}
+    .wf-hud b{color:var(--text);font-weight:400}
+    .wf-hud .wf-bar{width:160px;height:1px;background:var(--line);margin-top:8px;position:relative;overflow:hidden}
+    .wf-hud .wf-bar i{position:absolute;left:0;top:0;bottom:0;width:0;background:var(--accent);transition:width .2s linear}
+    .nav,.page,.footer{transition:opacity .8s var(--ease)}
+    .wf-loading .nav,.wf-loading .page,.wf-loading .footer{opacity:0}
+    .wf-loading .page.active{animation:none}
+    @media(max-width:768px){.wf-hud{left:24px;bottom:24px}}
+
     @media(max-width:1024px){
       .work-thumb{display:none}
       .about-head{flex-direction:column-reverse;align-items:flex-start}
@@ -481,6 +506,138 @@
 
       var initialPage=window.location.hash.replace('#','');
       if(initialPage){navigateTo(initialPage)}else{navigateTo('home')}
+    })();
+  </script>
+
+  <script>
+    /* WIREFRAME LOADER — measures the real DOM and "compiles" it box by box */
+    (function(){
+      'use strict';
+      var forced=/[?&]wf(=|&|$)/.test(window.location.search);
+      if(!forced&&window.matchMedia&&window.matchMedia('(prefers-reduced-motion: reduce)').matches)return;
+      /* play once per browser session; ?wf forces a replay */
+      var seen=false;
+      try{seen=sessionStorage.getItem('wf-seen')==='1';if(!seen)sessionStorage.setItem('wf-seen','1')}catch(e){}
+      if(seen&&!forced)return;
+
+      var body=document.body;
+      body.classList.add('wf-loading');
+
+      var wf=document.createElement('div');
+      wf.className='wf';
+      wf.innerHTML='<svg xmlns="http://www.w3.org/2000/svg"></svg>'+
+        '<div class="wf-scan"></div>'+
+        '<div class="wf-hud"><div>building layout</div>'+
+        '<div>node <b id="wf-n">00</b> / <b id="wf-t">00</b></div>'+
+        '<div id="wf-cur">&nbsp;</div>'+
+        '<div class="wf-bar"><i id="wf-bar"></i></div></div>';
+      body.appendChild(wf);
+
+      var svg=wf.querySelector('svg');
+      var scan=wf.querySelector('.wf-scan');
+      var nEl=document.getElementById('wf-n');
+      var tEl=document.getElementById('wf-t');
+      var curEl=document.getElementById('wf-cur');
+      var barEl=document.getElementById('wf-bar');
+      var NS='http://www.w3.org/2000/svg';
+      var started=false;
+
+      function pad(n){return n<10?'0'+n:''+n}
+      function mk(tag,attrs){
+        var el=document.createElementNS(NS,tag);
+        for(var k in attrs)if(attrs.hasOwnProperty(k))el.setAttribute(k,attrs[k]);
+        return el;
+      }
+      function nameOf(el){
+        var n=el.tagName.toLowerCase();
+        var c=(el.getAttribute('class')||'').split(' ')[0];
+        return c?n+'.'+c:n;
+      }
+
+      function collect(){
+        var active=document.querySelector('.page.active');
+        var globalSel=['.nav-logo','.nav-link'];
+        var pageSel=['.hero-meta','.hero h1','.hero h1 .indent','.hero h1 em','.work-label',
+          '.work-row','.work-title','.work-meta',
+          '.about-head h1','.about-portrait','.section-label','.bio p','.exp-item','.skills',
+          '.back','.proj-label','.proj-head h1','.proj-meta > div','.proj-intro','.gallery img','.next-title',
+          '.err-code','.err h1'];
+        var list=[],i,j,nodes;
+        for(i=0;i<globalSel.length;i++){
+          nodes=document.querySelectorAll(globalSel[i]);
+          for(j=0;j<nodes.length;j++)list.push(nodes[j]);
+        }
+        if(active){
+          for(i=0;i<pageSel.length;i++){
+            nodes=active.querySelectorAll(pageSel[i]);
+            for(j=0;j<nodes.length;j++)list.push(nodes[j]);
+          }
+        }
+        var vh=window.innerHeight,out=[],seen=[];
+        for(i=0;i<list.length;i++){
+          if(seen.indexOf(list[i])!==-1)continue;
+          seen.push(list[i]);
+          var r=list[i].getBoundingClientRect();
+          if(r.width<2||r.height<2||r.top>vh-8)continue;
+          out.push({el:list[i],r:r});
+        }
+        out.sort(function(a,b){return (a.r.top-b.r.top)||(a.r.left-b.r.left)});
+        return out;
+      }
+
+      function drawNode(item,idx,total){
+        var r=item.r;
+        var x=Math.round(r.left)+.5,y=Math.round(r.top)+.5,w=Math.round(r.width),h=Math.round(r.height);
+        var g=mk('g',{});
+        var rect=mk('rect',{x:x,y:y,width:w,height:h});
+        rect.style.setProperty('--p',(2*(w+h))+'px');
+        g.appendChild(rect);
+        /* corner tick */
+        g.appendChild(mk('line',{x1:x-6,y1:y,x2:x+6,y2:y}));
+        g.appendChild(mk('line',{x1:x,y1:y-6,x2:x,y2:y+6}));
+        /* label — skipped on tiny nodes where it would overlap its neighbours */
+        if(w>=72){
+          var label=mk('text',{x:x,y:y-5});
+          if(y<14){label.setAttribute('y',y+h+12)}
+          label.textContent=nameOf(item.el)+'  '+w+'×'+h;
+          g.appendChild(label);
+        }
+        svg.appendChild(g);
+
+        scan.style.top=Math.round(r.top+r.height)+'px';
+        nEl.textContent=pad(idx+1);
+        curEl.textContent=nameOf(item.el);
+        barEl.style.width=Math.round(((idx+1)/total)*100)+'%';
+      }
+
+      function finish(){
+        curEl.textContent='render';
+        scan.style.top=window.innerHeight+'px';
+        setTimeout(function(){
+          wf.classList.add('done');
+          body.classList.remove('wf-loading');
+          setTimeout(function(){if(wf.parentNode)wf.parentNode.removeChild(wf)},800);
+        },320);
+      }
+
+      function start(){
+        if(started)return;started=true;
+        var items=collect();
+        var total=items.length;
+        tEl.textContent=pad(total);
+        if(!total){finish();return}
+        var step=Math.max(38,Math.min(70,1300/total));
+        for(var i=0;i<total;i++){
+          (function(item,idx){setTimeout(function(){drawNode(item,idx,total)},120+idx*step)})(items[i],i);
+        }
+        setTimeout(finish,120+total*step+420);
+      }
+
+      /* wait for the serif to be ready so boxes match the final layout */
+      if(document.fonts&&document.fonts.ready){
+        document.fonts.ready.then(function(){setTimeout(start,80)});
+      }else{setTimeout(start,400)}
+      setTimeout(start,2500); /* safety net */
     })();
   </script>
 </body>

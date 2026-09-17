@@ -40,7 +40,8 @@ Portfolio-Sean/
 - Home : hero typographique géant, liste de projets indexée (01–05) — au survol le titre glisse et la vignette flotte (rotation -2°, ombre portée) ; vignettes masquées ≤1024px
 - Pages projet : colonne éditoriale max 1080px, méta en petites capitales, galeries 16/9 et 4/3, lien "next" avec flèche
 - About : portrait N&B (About/profil_picture_bw.png), skills en phrase serif séparée par des puces
-- Pas de curseur custom, pas de loader — seule animation : fade-up au changement de page
+- Pas de curseur custom — seule animation de navigation : fade-up au changement de page
+- Loader "wireframe" au premier chargement : un overlay SVG mesure les vrais éléments du DOM et les trace un par un (contour accent → gris, labels monospace `tag.class W×H`, HUD "building layout"), puis se dissout. Joué une fois par session (`sessionStorage` clé `wf-seen`), désactivé si `prefers-reduced-motion`, forçable avec `?wf=1` (utile pour Sean dont Windows a "réduire les animations" activé)
 - Responsive : breakpoints à 1024px et 768px
 - L'ancienne DA dark (#0a0a0a / accent lime #d4ff00) est dans l'historique git avant le commit "New editorial design"
 
